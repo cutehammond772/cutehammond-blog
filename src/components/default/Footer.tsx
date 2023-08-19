@@ -3,14 +3,11 @@ export type FooterScheme = { className: string };
 export default function Footer({ className }: FooterScheme) {
   return (
     <footer
-      className={`${className} z-50 px-8 py-4 flex gap-4 justify-between items-center bg-black`}
+      className={`${className} z-50 px-8 py-4 flex flex-col sm:flex-row gap-2 justify-between items-center bg-black text-white`}
     >
-      <span className="text-white">2023 Jungheon Lee</span>
-      <a
-        href="https://github.com/cutehammond772"
-        className="no-underline rounded-lg text-black bg-white hover:bg-gray px-4 py-2"
-      >
-        Github
+      <span>2023 Jungheon Lee</span>
+      <a href="https://kr.freepik.com/icon/%ED%96%84%EC%8A%A4%ED%84%B0_616475">
+        Logo made by Freepik
       </a>
     </footer>
   );
