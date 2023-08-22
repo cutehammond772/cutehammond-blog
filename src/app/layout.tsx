@@ -17,10 +17,8 @@ const script = `(function() {
     window.localStorage.setItem("theme", (theme = "system"));
   }
 
-  console.log("inited");
-
   document.documentElement.dataset.theme = 
-  (theme == "system") ? (window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light") : theme;
+  (theme == "system") ? (window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light") : theme;
 })()`;
 
 export default function RootLayout({
