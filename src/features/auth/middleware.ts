@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import ErrorResponse from "../error";
-import { checkIntegrity, validateToken } from "./utils/validation";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "./utils/type";
-import { renew } from "./utils/token";
+import { renew, validateToken, validateUser } from "./utils/validation";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "./utils/types";
 
 // 현재 프로덕션 상태인지 확인
 const production = process.env.NODE_ENV == "production";
@@ -12,9 +11,7 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookies = request.cookies;
 
-  /**
-   * JWT 검증에 필요한 Secret Key이다.
-   */
+  // JWT 검증에 필요한 Secret Key이다.
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
@@ -22,21 +19,20 @@ export default async function middleware(request: NextRequest) {
       pathname,
       status: 500,
       error: "Internal Server Error",
-      reason: "JWT secret key is not defined.",
+      reason: "cannot find JWT secret key.",
     });
   }
 
-  /**
-   * Http-Only Cookie로 설정된 Access Token이다.
-   * 명시되지 않거나 유효 기한이 만료된 경우, Refresh Token을 이용하여 재발급을 진행한다.
-   */
-  const accessToken = await validateToken({
-    secret,
-    token: cookies.get(ACCESS_TOKEN)?.value,
-  });
+  // Access Token을 통해 사용자 검증을 진행한다.
+  const userValidation = await validateUser(request);
 
-  if (accessToken.valid) {
-    return NextResponse.next();
+  if (!userValidation.valid) {
+    return ErrorResponse({
+      pathname,
+      status: 401,
+      error: "Unauthorized",
+      reason: [...userValidation.reasons],
+    });
   }
 
   /**
@@ -57,30 +53,20 @@ export default async function middleware(request: NextRequest) {
     });
   }
 
-  if (await checkIntegrity(refreshToken.payload)) {
-    return ErrorResponse({
-      pathname,
-      status: 401,
-      error: "Unauthorized",
-      reason:
-        "Intregrity check failed; The refresh token in client does not equal to that in server.",
-    });
-  }
-
   /**
    * Access Token, Refresh Token을 재발급한다.
    */
   const renewal = await renew({
     secret,
-    id: refreshToken.payload.aud as string,
+    result: refreshToken,
   });
 
-  if (!renewal) {
+  if (!renewal.valid) {
     return ErrorResponse({
       pathname,
       status: 500,
       error: "Internal Server Error",
-      reason: "Token cannot renew for some reason.",
+      reason: [...renewal.reasons],
     });
   }
 

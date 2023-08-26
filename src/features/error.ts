@@ -23,7 +23,7 @@ export default function ErrorResponse({
 interface ErrorBody {
   error: string;
   pathname: string;
-  reason?: string;
+  reason?: string | string[];
 }
 
 export interface ErrorPayload {
@@ -32,5 +32,5 @@ export interface ErrorPayload {
 
   error?: string;
   status: number;
-  reason?: string;
+  reason?: string | string[];
 }
