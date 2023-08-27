@@ -1,6 +1,6 @@
 "use client";
 
-import useTheme from "@/features/theme/useTheme";
+import useTheme from "@/utils/theme/useTheme";
 import { interMedium } from "@/styles/fonts/inter";
 
 export default function ThemeToggleButton() {

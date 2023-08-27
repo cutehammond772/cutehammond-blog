@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
-import { JWTPayload, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { kv } from "@vercel/kv";
+
 import {
   ACCESS_TOKEN,
   ACCESS_TOKEN_EXP,
@@ -13,11 +14,37 @@ import {
   TokenValidResult,
   ValidResult,
   Invalid,
+  TokenProfile,
+  UserValidationResult,
 } from "./types";
 import { exists } from "./user";
-import { createToken } from "./creation";
 
-// Refresh Token의 무결성을 검증한다. (서버에 저장된 토큰과 비교한다.)
+/**
+ * 특정 프로파일에 따라 JWT Token을 생성한다.
+ */
+export async function createToken(
+  secret: string,
+  profile: TokenProfile
+): Promise<AuthToken> {
+  const { id, exp, ...other } = profile;
+
+  try {
+    return new SignJWT({ ...other })
+      .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+      .setSubject(REFRESH_TOKEN)
+      .setIssuer(TOKEN_ISSUER)
+      .setAudience(id)
+      .setIssuedAt()
+      .setExpirationTime(Date.now() / 1000 + exp)
+      .sign(new TextEncoder().encode(secret));
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Refresh Token의 무결성을 검증한다. (= 서버에 저장된 토큰과 비교한다.)
+ */
 export async function checkIntegrity(
   result: TokenValidResult
 ): Promise<ValidResult | InvalidResult> {
@@ -39,7 +66,9 @@ export async function checkIntegrity(
   return { valid: true };
 }
 
-// JWT Token이 유효한지 검증한다.
+/**
+ * JWT Token이 유효한지 검증한다.
+ */
 export async function validateToken({
   secret,
   token,
@@ -64,10 +93,15 @@ export async function validateToken({
   }
 }
 
-// 유효한 사용자인지 확인한다. (= 로그인 상태인지 확인한다.)
+/**
+ * 유효한 사용자인지 확인한다.
+ *
+ * 1. 현재 로그인된 상태인지 확인한다.
+ * 2. 가입된 사용자인지 확인한다.
+ */
 export async function validateUser({
   cookies,
-}: NextRequest): Promise<ValidResult | InvalidResult> {
+}: NextRequest): Promise<UserValidationResult | InvalidResult> {
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
@@ -100,10 +134,12 @@ export async function validateUser({
     return Invalid("USER_VALIDATION_FAILED", "USER_NOT_FOUND");
   }
 
-  return { valid: true };
+  return { valid: true, id };
 }
 
-// Access Token과 Refresh Token을 (재)발급한다.
+/**
+ * Access Token과 Refresh Token을 재발급한다.
+ */
 export async function renew({
   secret,
   result,
@@ -111,7 +147,6 @@ export async function renew({
   secret: string;
   result: TokenValidResult;
 }): Promise<TokenRenewalResult | InvalidResult> {
-  // Refresh Token의 무결성 검증을 진행한다.
   const validation = await checkIntegrity(result);
 
   if (!validation.valid) {
@@ -132,7 +167,7 @@ export async function renew({
   }
 
   // Refresh Token을 재설정한다. (-> Rotation)
-  await kv.hset(`user:${id}`, { [REFRESH_TOKEN]: refreshToken });
+  await kv.hmset(`user:${id}`, { [REFRESH_TOKEN]: refreshToken });
 
   return { valid: true, accessToken, refreshToken };
 }

@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import ErrorResponse from "../error";
-import { renew, validateToken, validateUser } from "./utils/validation";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "./utils/types";
+import ErrorResponse from "@/utils/error";
+import { renew, validateToken, validateUser } from "@/utils/auth/token";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/auth/types";
+import { AuthErrors } from "@/utils/auth/error";
 
 // 현재 프로덕션 상태인지 확인
 const production = process.env.NODE_ENV == "production";
 
 // 권한이 필요할 때 자동으로 검증 및 재발급을 수행한다.
-export default async function middleware(request: NextRequest) {
+export async function middleware(
+  request: NextRequest,
+  response: NextResponse
+): Promise<[boolean, NextResponse]> {
   const { pathname } = request.nextUrl;
   const cookies = request.cookies;
 
@@ -15,24 +19,34 @@ export default async function middleware(request: NextRequest) {
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
-    return ErrorResponse({
-      pathname,
-      status: 500,
-      error: "Internal Server Error",
-      reason: "cannot find JWT secret key.",
-    });
+    return [
+      false,
+      ErrorResponse({
+        pathname,
+        status: 500,
+        error: "Internal Server Error",
+        reason: [AuthErrors.JWT_SECRET_NOT_FOUND],
+      }),
+    ];
   }
 
   // Access Token을 통해 사용자 검증을 진행한다.
   const userValidation = await validateUser(request);
 
-  if (!userValidation.valid) {
-    return ErrorResponse({
-      pathname,
-      status: 401,
-      error: "Unauthorized",
-      reason: [...userValidation.reasons],
-    });
+  // Access Token이 존재하지 않는 경우는 제외한다.
+  if (
+    !userValidation.valid &&
+    !userValidation.reasons.includes("INVALID_ACCESS_TOKEN")
+  ) {
+    return [
+      false,
+      ErrorResponse({
+        pathname,
+        status: 401,
+        error: "Unauthorized",
+        reason: [...userValidation.reasons],
+      }),
+    ];
   }
 
   /**
@@ -45,12 +59,15 @@ export default async function middleware(request: NextRequest) {
   });
 
   if (!refreshToken.valid) {
-    return ErrorResponse({
-      pathname,
-      status: 401,
-      error: "Unauthorized",
-      reason: "This user is not authorized.",
-    });
+    return [
+      false,
+      ErrorResponse({
+        pathname,
+        status: 401,
+        error: "Unauthorized",
+        reason: [...refreshToken.reasons],
+      }),
+    ];
   }
 
   /**
@@ -62,15 +79,16 @@ export default async function middleware(request: NextRequest) {
   });
 
   if (!renewal.valid) {
-    return ErrorResponse({
-      pathname,
-      status: 500,
-      error: "Internal Server Error",
-      reason: [...renewal.reasons],
-    });
+    return [
+      false,
+      ErrorResponse({
+        pathname,
+        status: 500,
+        error: "Internal Server Error",
+        reason: [...renewal.reasons],
+      }),
+    ];
   }
-
-  const response = NextResponse.next();
 
   /**
    * Token을 재발급한다.
@@ -91,5 +109,9 @@ export default async function middleware(request: NextRequest) {
     secure: production,
   });
 
-  return response;
+  return [true, response];
+}
+
+export function matcher(path: string) {
+  return path.includes("/auth/");
 }

@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { kv } from "@vercel/kv";
 
 import {
@@ -10,17 +10,24 @@ import {
   TokenRenewalResult,
   SALT_KEY,
   Invalid,
+  ValidResult,
+  ACCESS_TOKEN,
 } from "./types";
-import { createToken } from "./creation";
 import { createEncryptionPair, encrypt } from "./encryption";
-import { validateUser } from "./validation";
+import { createToken, validateUser } from "./token";
 
-// 해당 ID를 가진 계정이 존재하는지 확인한다.
+/**
+ * 해당 ID를 가진 계정이 존재하는지 확인한다.
+ */
 export async function exists(id: string) {
   return (await kv.exists(`user:${id}`)) > 0;
 }
 
-// 회원 가입을 진행한다.
+export async function identify(request: NextRequest) {}
+
+/**
+ * 사용자를 등록한다.
+ */
 export async function register(
   id: string,
   pwd: string
@@ -55,20 +62,18 @@ export async function register(
   }
 
   // 사용자를 등록한다.
-  const result = await kv.hmset(`user:${id}`, {
+  await kv.hmset(`user:${id}`, {
     [REFRESH_TOKEN]: refreshToken,
     [SALT_KEY]: pair.salt,
     [PASSWORD_KEY]: pair.pwd,
   });
 
-  if (result !== "OK") {
-    return Invalid("RENEW_FAILED", "STORE_FAILED");
-  }
-
   return { valid: true, accessToken, refreshToken };
 }
 
-// 로그인을 수행한다.
+/**
+ * 로그인을 수행한다.
+ */
 export async function authenticate(
   id: string,
   pwd: string,
@@ -121,15 +126,28 @@ export async function authenticate(
     return Invalid("AUTHENTICATION_FAILED", "TOKEN_CREATION_FAILED");
   }
 
-  const result = await kv.hmset(`user:${id}`, {
-    [REFRESH_TOKEN]: refreshToken,
-  });
-
-  if (result !== "OK") {
-    return Invalid("AUTHENTICATION_FAILED", "RENEW_FAILED");
-  }
+  await kv.hmset(`user:${id}`, { [REFRESH_TOKEN]: refreshToken });
 
   return { valid: true, accessToken, refreshToken };
 }
 
-export async function logout(request: NextRequest) {}
+/**
+ * 로그아웃을 수행한다.
+ */
+export async function logout(
+  request: NextRequest,
+  response: NextResponse
+): Promise<ValidResult | InvalidResult> {
+  // 현재 사용자가 유효한 사용자인지 확인한다.
+  const userCheck = await validateUser(request);
+
+  if (!userCheck.valid) {
+    return Invalid("LOGOUT_FAILED", "USER_NOT_AUTHORIZED");
+  }
+
+  // JWT Token을 삭제한다.
+  response.cookies.delete(ACCESS_TOKEN);
+  response.cookies.delete(REFRESH_TOKEN);
+
+  return { valid: true };
+}

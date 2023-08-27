@@ -7,7 +7,7 @@ export default function ErrorResponse({
   reason,
 }: ErrorPayload) {
   // API 요청에 대해 JSON 형태의 응답 전달
-  if (pathname.startsWith("/api")) {
+  if (pathname.includes("/api/")) {
     return NextResponse.json<ErrorBody>(
       { error: error ?? "Unknown Error", reason, pathname },
       { status }

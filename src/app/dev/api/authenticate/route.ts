@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import ErrorResponse from "@/features/error";
-import { AuthErrors } from "@/features/auth/utils/error";
-import { authenticate } from "@/features/auth/utils/user";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/features/auth/utils/types";
+import ErrorResponse from "@/utils/error";
+import { AuthErrors } from "@/utils/auth/error";
+import { authenticate } from "@/utils/auth/user";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/auth/types";
 
-// 현재 프로덕션 상태인지 확인
+// 프로덕션 환경인지 확인한다.
 const production = process.env.NODE_ENV == "production";
 
 export async function POST(request: NextRequest) {

@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import Auth from "@/features/auth/middleware";
+import { dev, auth } from "@/middlewares";
+
+const middlewares = [dev, auth];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 권한이 필요한 요청인 경우 검증을 진행한다.
-  if (pathname.includes("/auth/")) {
-    return Auth(request);
+  let next = true;
+  let response = NextResponse.next();
+
+  for (const { matcher, middleware } of middlewares) {
+    if (!matcher(pathname)) continue;
+    [next, response] = [...(await middleware(request, response))];
+
+    if (!next) return response;
   }
 
-  // ... 다른 Path에 대한 Middleware가 들어갈 수 있다.
-
-  return NextResponse.next();
+  return response;
 }

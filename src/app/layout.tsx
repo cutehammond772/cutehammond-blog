@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import Header from "@/components/default/Header";
 import Footer from "@/components/default/Footer";
-import ThemeContainer from "@/features/theme/ThemeContainer";
+import ThemeContainer from "@/utils/theme/ThemeContainer";
 
 export const metadata: Metadata = {
   title: "개발하는 햄찌",

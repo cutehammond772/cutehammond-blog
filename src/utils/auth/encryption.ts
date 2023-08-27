@@ -9,7 +9,9 @@ import {
   SaltGenResult,
 } from "./types";
 
-// 임의의 Salt를 생성한다.
+/**
+ * 비밀번호를 암호화하기 위한 Random Salt를 생성한다.
+ */
 export async function createRandomSalt(): Promise<
   SaltGenResult | InvalidResult
 > {
@@ -24,7 +26,9 @@ export async function createRandomSalt(): Promise<
   });
 }
 
-// 비밀번호를 암호화한다.
+/**
+ * 비밀번호를 암호화한다.
+ */
 export async function encrypt(
   salt: string,
   pwd: string
@@ -40,7 +44,9 @@ export async function encrypt(
   });
 }
 
-// 암호화된 비밀번호와 Salt 쌍을 생성합니다.
+/**
+ * 암호화된 비밀번호와 Salt 쌍을 생성한다.
+ */
 export async function createEncryptionPair(
   pwd: string
 ): Promise<EncryptionPairResult | InvalidResult> {

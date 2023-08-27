@@ -50,6 +50,10 @@ export interface InvalidResult {
   readonly reasons: AuthError[];
 }
 
+export interface UserValidationResult extends ValidResult {
+  readonly id: string;
+}
+
 export interface TokenRenewalResult extends ValidResult {
   readonly accessToken: NonNullable<AuthToken>;
   readonly refreshToken: NonNullable<AuthToken>;
