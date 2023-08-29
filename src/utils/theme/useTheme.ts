@@ -1,6 +1,8 @@
-import { useContext } from "react";
-import { ThemeContext } from "@/utils/theme/ThemeContainer";
+"use client";
+
+import { useRecoilState } from "recoil";
+import { themeState } from "./ThemeContainer";
 
 export default function useTheme() {
-  return useContext(ThemeContext);
+  return useRecoilState(themeState);
 }
