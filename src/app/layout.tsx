@@ -29,10 +29,10 @@ export default function RootLayout({
   return (
     <BlogContainer>
       <html lang="ko" suppressHydrationWarning>
-        <body className="flex flex-col bg-primary">
+        <body className="flex flex-col bg-primary min-h-screen">
           <script dangerouslySetInnerHTML={{ __html: themeScript }} />
           <Header className="tablet:px-[20%] sticky top-0" />
-          <main className="tablet:mx-[20%]">{children}</main>
+          <main className="tablet:mx-[20%] flex-grow">{children}</main>
           <Footer className="tablet:px-[20%] mt-48" />
         </body>
       </html>
