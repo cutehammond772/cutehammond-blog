@@ -25,9 +25,9 @@ export default memo(function ThemeButton({ theme }: { theme: Theme }) {
 
   useEffect(() => {
     if (selected === theme) {
-      ref.current?.classList?.add("bg-lime-500");
+      ref.current?.classList?.add("cb-emp");
     } else {
-      ref.current?.classList?.remove("bg-lime-500");
+      ref.current?.classList?.remove("cb-emp");
     }
   }, [selected, theme]);
 

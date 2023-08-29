@@ -6,7 +6,7 @@ import ThemeButton from "./ThemeButton";
 export default function ThemeSelection() {
   return (
     <div
-      className={`${interMedium.className} bg-slate-200 rounded-xl p-4 flex flex-col flex-nowrap gap-4 justify-stretch`}
+      className={`${interMedium.className} cb-bg-lv1 rounded-xl p-4 flex flex-col flex-nowrap gap-4 justify-stretch`}
     >
       <div className={`${notoSansBold.className} text-md`}>테마 설정하기</div>
       <div className="grid grid-cols-3 gap-2">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import "@/styles/globals.css";
-import Header from "@/components/default/Header";
-import Footer from "@/components/default/Footer";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import BlogContainer from "@/components/BlogContainer";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <BlogContainer>
       <html lang="ko" suppressHydrationWarning>
-        <body className="flex flex-col bg-primary min-h-screen">
+        <body className="flex flex-col cb-bg cb-text min-h-screen">
           <script dangerouslySetInnerHTML={{ __html: themeScript }} />
           <Header className="tablet:px-[20%] sticky top-0" />
           <main className="tablet:mx-[20%] flex-grow">{children}</main>

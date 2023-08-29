@@ -9,9 +9,7 @@ export default async function Page() {
       className={`${notoSansBold.className} flex flex-nowrap flex-col mt-32 px-8 tablet:px-0`}
     >
       <section className="flex flex-col gap-y-8 tablet:gap-y-24">
-        <h1 className="text-primary text-2xl tablet:text-4xl">
-          최근에 올린 글
-        </h1>
+        <p className="text-2xl tablet:text-4xl">최근에 올린 글</p>
         <ThemeSelection />
         <div className="flex flex-nowrap flex-col gap-y-12 tablet:gap-y-24">
           <Article boj={1000} />
