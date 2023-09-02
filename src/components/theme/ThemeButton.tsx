@@ -25,15 +25,15 @@ export default memo(function ThemeButton({ theme }: { theme: Theme }) {
 
   useEffect(() => {
     if (selected === theme) {
-      ref.current?.classList?.add("cb-emp");
+      ref.current?.classList?.add("blog-emphasize");
     } else {
-      ref.current?.classList?.remove("cb-emp");
+      ref.current?.classList?.remove("blog-emphasize");
     }
   }, [selected, theme]);
 
   return (
     <button
-      className="p-4 text-sm rounded-md transition ease-in-out"
+      className="p-4 rounded-md transition ease-in-out"
       ref={ref}
       onClick={() => setTheme(theme)}
     >

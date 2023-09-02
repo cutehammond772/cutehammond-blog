@@ -10,7 +10,7 @@ export type HeaderScheme = { className: string };
 export default function Header({ className }: HeaderScheme) {
   return (
     <header
-      className={`${className} ${interBold.className} cb-bg z-50 flex flex-nowrap justify-between items-center px-4 sm:px-8 md:px-0 py-4 text-xl`}
+      className={`${className} ${interBold.className} blog-lv0 z-50 flex flex-nowrap justify-between items-center px-4 sm:px-8 md:px-0 py-4`}
     >
       <Link href="/" className="flex flex-nowrap items-center gap-2">
         <Image src={Logo} alt="Logo" width={24} height={24} />
@@ -18,7 +18,7 @@ export default function Header({ className }: HeaderScheme) {
       </Link>
 
       <nav className={`${notoSansBold.className} hidden desktop:block`}>
-        <ul className="flex flex-nowrap gap-x-8 text-sm">
+        <ul className="flex flex-nowrap gap-x-8">
           <li>
             <a href="#">알고리즘</a>
           </li>

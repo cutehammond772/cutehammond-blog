@@ -17,8 +17,8 @@ export async function generateMetadata({
 export default function Page({ params }: ArticlePageParams) {
   return (
     <div className={`${notoSansBold.className}`}>
-      <div className="text-2xl p-4 min-h-[40vh] border-b-2 flex flex-col justify-end">
-        <div className="break-all">{decodeURIComponent(params.slug)}</div>
+      <div className="p-4 min-h-[40vh] border-b-2 flex flex-col justify-end">
+        <h1 className="break-all">{decodeURIComponent(params.slug)}</h1>
       </div>
     </div>
   );
