@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useRef } from "react";
 import useTheme from "@/utils/theme/useTheme";
-import { Theme } from "@/utils/theme/ThemeContainer";
+import { Theme } from "@/components/theme/ThemeContainer";
 
 const themes: { [theme in Theme]: { icon: string; subject: string } } = {
   dark: {
