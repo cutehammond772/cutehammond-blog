@@ -4,13 +4,14 @@ import Logo from "/public/logo.svg";
 import { interBold } from "@/styles/fonts/inter";
 import { notoSansBold } from "@/styles/fonts/notoSans";
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 
 export type HeaderScheme = { className: string };
 
 export default function Header({ className }: HeaderScheme) {
   return (
     <header
-      className={`${className} ${interBold.className} blog-lv0 z-50 flex flex-nowrap justify-between items-center px-4 sm:px-8 md:px-0 py-4`}
+      className={`${className} ${interBold.className} blog-lv0 z-50 grid grid-cols-[auto_1fr_auto] items-center px-4 sm:px-8 md:px-0 py-4`}
     >
       <Link href="/" className="flex flex-nowrap items-center gap-2">
         <Image src={Logo} alt="Logo" width={24} height={24} />
@@ -18,7 +19,7 @@ export default function Header({ className }: HeaderScheme) {
       </Link>
 
       <nav className={`${notoSansBold.className} hidden desktop:block`}>
-        <ul className="flex flex-nowrap gap-x-8">
+        <ul className="flex flex-nowrap justify-center gap-x-8">
           <li>
             <a href="#">알고리즘</a>
           </li>
@@ -30,6 +31,8 @@ export default function Header({ className }: HeaderScheme) {
           </li>
         </ul>
       </nav>
+
+      <ThemeToggle />
     </header>
   );
 }

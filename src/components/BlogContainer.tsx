@@ -1,7 +1,7 @@
 "use client";
 
 import { RecoilRoot } from "recoil";
-import ThemeContainer from "@/utils/theme/ThemeContainer";
+import ThemeContainer from "@/theme/ThemeContainer";
 
 export default function BlogContainer({ children }: React.PropsWithChildren) {
   return (
