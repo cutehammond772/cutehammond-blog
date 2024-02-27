@@ -1,20 +1,23 @@
-import { notoSansBold } from "@/styles/fonts/notoSans";
-
-import Article from "@/components/index/Article";
-
 export default async function Page() {
   return (
-    <div
-      className={`${notoSansBold.className} flex flex-nowrap flex-col mt-32 px-8 tablet:px-0`}
-    >
-      <section className="flex flex-col gap-y-8 tablet:gap-y-24">
-        <h1>최근에 올린 글</h1>
-        <div className="flex flex-nowrap flex-col gap-y-12 tablet:gap-y-24">
-          <Article boj={1000} />
-          <Article boj={1001} />
-          <Article boj={1002} />
+    <>
+      <div className="mb-12 mt-48 text-2xl font-bold md:text-4xl">
+        최근에 작성된 글
+      </div>
+      <div className="grid grid-flow-row grid-cols-1 gap-x-8 gap-y-24 xl:grid-cols-2">
+        <div className="grid min-h-[30rem] grid-rows-[2fr_1fr] transition-shadow hover:shadow-2xl">
+          <div className="bg-white"></div>
+          <div className="row-auto flex flex-col gap-2 p-4 pt-8">
+            <div className="flex-grow text-2xl font-bold">
+              BOJ 13974 : 파일 합치기 2
+            </div>
+            <div className="text-md">🕑 2024-02-27</div>
+            <div className="text-md">
+              ✏️ #알고리즘 #다이나믹프로그래밍 #크누스최적화
+            </div>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 }

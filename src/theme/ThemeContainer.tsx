@@ -15,7 +15,7 @@ const store = typeof window !== "undefined" ? window.localStorage : null;
 
 export const themeState = atom<Theme>({
   key: Key,
-  default: "system",
+  default: "System",
   effects: [
     ({ setSelf, onSet }) => {
       if (store) {
@@ -42,9 +42,9 @@ export default function ThemeContainer({ children }: React.PropsWithChildren) {
   useEffect(() => {
     const dset: ThemeDataSet = document.documentElement.dataset;
 
-    if (theme == "system") {
+    if (theme == "System") {
       const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      dset.theme = sysDark ? "dark" : "light";
+      dset.theme = sysDark ? "Dark" : "Light";
       return;
     }
 

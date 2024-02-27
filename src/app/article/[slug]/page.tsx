@@ -5,7 +5,6 @@ export interface ArticlePageParams {
   params: { slug: string };
 }
 
-// 타이틀 변경
 export async function generateMetadata({
   params,
 }: ArticlePageParams): Promise<Metadata> {
@@ -16,8 +15,8 @@ export async function generateMetadata({
 
 export default function Page({ params }: ArticlePageParams) {
   return (
-    <div className={`${notoSansBold.className}`}>
-      <div className="p-4 min-h-[40vh] border-b-2 flex flex-col justify-end">
+    <div className={notoSansBold.className}>
+      <div className="flex min-h-[40vh] flex-col justify-end border-b-2 p-4">
         <h1 className="break-all">{decodeURIComponent(params.slug)}</h1>
       </div>
     </div>

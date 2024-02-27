@@ -3,11 +3,11 @@ const themeScript = `(function() {
   let theme = window.localStorage.getItem("theme");
 
   if (!theme) {
-    window.localStorage.setItem("theme", (theme = "system"));
+    window.localStorage.setItem("theme", (theme = "System"));
   }
 
   document.documentElement.dataset.theme = 
-  (theme == "system") ? (window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light") : theme;
+  (theme == "System") ? (window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "Dark" : "Light") : theme;
 })()`;
 
 export default function ThemePreloadScript() {

@@ -2,46 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    @apply blog-text;
-  }
-
-  body {
-    @apply blog-lv0;
-  }
-
-  h1 {
-    @apply text-2xl tablet:text-4xl;
-  }
-
-  h2 {
-    @apply text-xl tablet:text-2xl;
-  }
-
-  div {
-    @apply text-base;
-  }
-}
-
 @layer components {
-  .blog-lv0 {
-    @apply bg-primary-50 dark:bg-primary-950;
+  .blog-bg {
+    @apply bg-[#d1bfb5] text-[#2f3c43] transition-colors dark:bg-[#2f3c43] dark:text-[#d1bfb5];
   }
 
-  .blog-lv1 {
-    @apply bg-primary-100 dark:bg-primary-900;
-  }
-
-  .blog-lv2 {
-    @apply bg-primary-300 dark:bg-primary-700;
-  }
-
-  .blog-emphasize {
-    @apply bg-emphasize-400 dark:bg-emphasize-800;
-  }
-
-  .blog-text {
-    @apply text-black dark:text-white;
+  .blog-primary {
+    @apply bg-[#2f3c43] text-[#d1bfb5] transition-colors dark:bg-[#d1bfb5] dark:text-[#2f3c43];
   }
 }
