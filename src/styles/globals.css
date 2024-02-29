@@ -2,12 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .blog-bg {
-    @apply bg-[#d1bfb5] text-[#2f3c43] transition-colors dark:bg-[#2f3c43] dark:text-[#d1bfb5];
+@layer utilities {
+  /* 기본 배경 색상을 나타냅니다. */
+  .bg-default {
+    @apply bg-[#d1bfb5] dark:bg-[#2f3c43];
   }
 
-  .blog-primary {
-    @apply bg-[#2f3c43] text-[#d1bfb5] transition-colors dark:bg-[#d1bfb5] dark:text-[#2f3c43];
+  /* 페이지 내에 특정 공간을 분리해야 할 때 사용됩니다. */
+  .bg-layer {
+    @apply bg-[#2f3c43] dark:bg-[#d1bfb5];
+  }
+
+  /* 기본 텍스트 색상입니다. */
+  .text-default {
+    @apply text-[#2f3c43] dark:text-[#d1bfb5];
+  }
+
+  /* 특정 공간 내 텍스트 색상입니다. */
+  .text-layer {
+    @apply text-[#d1bfb5] dark:text-[#2f3c43];
   }
 }

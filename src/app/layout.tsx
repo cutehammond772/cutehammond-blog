@@ -25,10 +25,10 @@ export default async function Layout({
     <BlogContainer>
       <html lang="ko" suppressHydrationWarning>
         <body
-          className={`${notoSansMedium.className} blog-bg grid min-h-screen grid-cols-[1fr_10fr_1fr] grid-rows-[auto_1fr_auto] md:grid-cols-[3fr_6fr_3fr]`}
+          className={`${notoSansMedium.className} bg-default text-default grid min-h-screen grid-cols-[1fr_10fr_1fr] grid-rows-[auto_1fr_auto] md:grid-cols-[3fr_6fr_3fr]`}
         >
           <ThemePreloadScript />
-          <header className="blog-bg sticky top-0 z-50 col-span-1 col-start-2 py-4">
+          <header className="bg-default text-default sticky top-0 z-50 col-span-1 col-start-2 py-4">
             {header}
           </header>
           <aside className="col-span-1 col-start-1">{aside}</aside>
@@ -37,9 +37,9 @@ export default async function Layout({
               {children}
             </Suspense>
           </main>
-          <footer className="blog-primary col-span-3 mt-24 flex flex-col items-center justify-between gap-2 px-8 py-4 font-bold md:flex-row">
+          <footer className="bg-layer text-layer col-span-3 mt-24 flex flex-col items-center justify-between gap-2 px-8 py-4 font-bold md:flex-row">
             <span>2024 Jungheon Lee</span>
-            <a href="https://github.com/cutehammond772">🔗 Github</a>
+            <a href="https://github.com/cutehammond772">[GitHub]</a>
           </footer>
         </body>
       </html>

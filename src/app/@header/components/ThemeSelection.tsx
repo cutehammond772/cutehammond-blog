@@ -9,10 +9,10 @@ export default function ThemeSelection() {
 
   return (
     <ClientOnly>
-      <div className="flex flex-row gap-2 px-2 py-1 font-bold transition-colors">
+      <div className="flex flex-row gap-2 px-2 py-1 font-bold">
         {THEMES.map((theme) => (
           <button
-            className={`${selected == theme ? "blog-primary" : "blog-bg"} px-2 py-1`}
+            className={`${selected == theme ? "bg-layer text-layer" : "bg-default text-default"} px-2 py-1`}
             key={theme}
             onClick={() => setTheme(theme)}
           >

@@ -16,8 +16,14 @@ export async function generateMetadata({
 export default function Page({ params }: ArticlePageParams) {
   return (
     <div className={notoSansBold.className}>
-      <div className="flex min-h-[40vh] flex-col justify-end border-b-2 p-4">
-        <h1 className="break-all">{decodeURIComponent(params.slug)}</h1>
+      <div className="mt-48 flex flex-col justify-end border-b-2 pb-4">
+        <span className="break-all pb-8 text-2xl leading-normal md:text-4xl">
+          {decodeURIComponent(params.slug)}
+        </span>
+        <span className="text-md">2024-02-27</span>
+        <span className="text-md break-keep">
+          #알고리즘 #다이나믹프로그래밍 #크누스최적화
+        </span>
       </div>
     </div>
   );

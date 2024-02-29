@@ -1,8 +1,8 @@
 export default async function Page() {
   return (
     <>
-      <div className="mb-12 mt-48 text-2xl font-bold md:text-4xl">
-        최근에 작성된 글
+      <div className="mb-12 mt-24 text-2xl font-bold md:mt-48 md:text-4xl">
+        모든 글
       </div>
       <div className="grid grid-flow-row grid-cols-1 gap-x-8 gap-y-24 xl:grid-cols-2">
         <div className="grid min-h-[30rem] grid-rows-[2fr_1fr] transition-shadow hover:shadow-2xl">
