@@ -20,8 +20,8 @@ export default function Page({ params }: ArticlePageParams) {
         <span className="break-all pb-8 text-2xl leading-normal md:text-4xl">
           {decodeURIComponent(params.slug)}
         </span>
-        <span className="text-md">2024-02-27</span>
-        <span className="text-md break-keep">
+        <span className="text-base">2024-02-27</span>
+        <span className="break-keep text-base">
           #알고리즘 #다이나믹프로그래밍 #크누스최적화
         </span>
       </div>

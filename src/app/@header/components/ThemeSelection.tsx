@@ -1,6 +1,6 @@
 "use client";
 
-import { ClientOnly } from "@/app/components/ClientOnly";
+import { ClientOnly } from "@/app/ClientOnly";
 import { THEMES } from "@/theme/theme";
 import useTheme from "@/theme/useTheme";
 

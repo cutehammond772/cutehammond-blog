@@ -1,11 +1,12 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import "@/styles/globals.css";
 import { notoSansMedium } from "@/styles/fonts/notoSans";
 
-import BlogContainer from "@/app/components/BlogContainer";
+import BlogContainer from "@/app/BlogContainer";
 import ThemePreloadScript from "@/theme/ThemePreloadScript";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "개발하는 햄찌",
@@ -39,7 +40,7 @@ export default async function Layout({
           </main>
           <footer className="bg-layer text-layer col-span-3 mt-24 flex flex-col items-center justify-between gap-2 px-8 py-4 font-bold md:flex-row">
             <span>2024 Jungheon Lee</span>
-            <a href="https://github.com/cutehammond772">[GitHub]</a>
+            <Link href="https://github.com/cutehammond772">GitHub</Link>
           </footer>
         </body>
       </html>
