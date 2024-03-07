@@ -25,17 +25,17 @@ export const mdxComponents: MDXComponents = {
     </h3>
   ),
   p: ({ children, ...props }) => (
-    <p {...props} className="my-4 break-keep text-lg leading-8 md:my-8">
+    <p {...props} className="my-4 break-keep text-base leading-8 md:my-8">
       {children}
     </p>
   ),
   ul: ({ children, ...props }) => (
-    <ul {...props} className="my-4 list-disc text-lg">
+    <ul {...props} className="my-4 list-disc text-base">
       {children}
     </ul>
   ),
   ol: ({ children, ...props }) => (
-    <ol {...props} className="my-4 list-decimal text-lg">
+    <ol {...props} className="my-4 list-decimal text-base">
       {children}
     </ol>
   ),

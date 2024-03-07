@@ -25,7 +25,7 @@ export default async function Layout({
     <BlogContainer>
       <html lang="ko" suppressHydrationWarning>
         <body
-          className={`${notoSansMedium.className} bg-default text-default grid min-h-screen grid-cols-[1fr_10fr_1fr] grid-rows-[auto_1fr_auto] xl:grid-cols-[3fr_6fr_3fr]`}
+          className={`${notoSansMedium.className} bg-default text-default grid min-h-screen grid-cols-[1fr_5fr_1fr] grid-rows-[auto_1fr_auto] md:grid-cols-[1fr_3fr_1fr]`}
         >
           <ThemePreloadScript />
           {/* Header Section */}

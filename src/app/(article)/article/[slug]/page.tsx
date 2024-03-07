@@ -25,14 +25,14 @@ export default async function Page({ params }: ArticlePageParams) {
   return (
     <article className={notoSansMedium.className}>
       <div className="mt-48 flex flex-col justify-end gap-2 pb-4">
-        <span className="break-keep pb-4 text-4xl font-bold leading-normal md:pb-8">
+        <span className="break-keep pb-4 text-3xl font-bold leading-normal md:pb-8 md:text-4xl">
           {title}
         </span>
-        <span className="text-base font-bold">
+        <span className="text-sm font-bold md:text-base">
           {convertDate(article.createdDate)} 생성 (
           {convertDate(article.modifiedDate)} 수정)
         </span>
-        <span className="flex flex-row flex-wrap gap-2 text-base">
+        <span className="flex flex-row flex-wrap gap-2 text-sm md:text-base">
           {article.tag.map((tag) => (
             <span key={tag} className="bg-layer text-layer px-2 py-1 font-bold">
               #{tag}
