@@ -1,5 +1,11 @@
-import { notoSansBold } from "@/styles/fonts/notoSans";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { load } from "@/utils/article/github";
+import { notoSansBold } from "@/styles/fonts/notoSans";
+import { convertDate } from "@/utils/date";
+
+import ArticleBody from "./components/ArticleBody";
 
 export interface ArticlePageParams {
   params: { slug: string };
@@ -13,18 +19,33 @@ export async function generateMetadata({
   };
 }
 
-export default function Page({ params }: ArticlePageParams) {
+export default async function Page({ params }: ArticlePageParams) {
+  const title = decodeURIComponent(params.slug);
+  const article = await load({ title });
+
+  // Article을 불러오는 데 실패한 경우, 404 Page를 보여준다.
+  if (article.error) notFound();
+
   return (
-    <div className={notoSansBold.className}>
-      <div className="mt-48 flex flex-col justify-end border-b-2 pb-4">
-        <span className="break-all pb-8 text-2xl leading-normal md:text-4xl">
-          {decodeURIComponent(params.slug)}
+    <article className={notoSansBold.className}>
+      <div className="mb-8 mt-48 flex flex-col justify-end gap-2 pb-4">
+        <span className="break-all pb-4 text-4xl leading-normal md:pb-8">
+          {title}
         </span>
-        <span className="text-base">2024-02-27</span>
-        <span className="break-keep text-base">
-          #알고리즘 #다이나믹프로그래밍 #크누스최적화
+        <span className="bg-layer text-layer self-start px-2 text-base">
+          {convertDate(article.createdDate)} 생성 (
+          {convertDate(article.modifiedDate)} 수정)
         </span>
+        <span className="flex flex-row gap-2 text-base">
+          {article.tag.map((tag) => (
+            <span key={tag} className="bg-layer text-layer px-2 py-1">
+              {tag}
+            </span>
+          ))}
+        </span>
+        <hr className="bg-layer h-[2px] border-0" />
       </div>
-    </div>
+      <ArticleBody markdown={article.markdown} />
+    </article>
   );
 }
