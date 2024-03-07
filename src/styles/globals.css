@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* blockquote 내부의 p는 margin이 존재하지 않아야 한다. */
+  blockquote > p {
+    margin: 0 !important;
+  }
+}
+
 @layer utilities {
   /* 기본 배경 색상을 나타냅니다. */
   .bg-default {
