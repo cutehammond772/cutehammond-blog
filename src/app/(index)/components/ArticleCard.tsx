@@ -5,7 +5,7 @@ import { Clock, Hash } from "react-feather";
 
 export interface ArticleCardProps {
   title: string;
-  createdDate: `${number}-${number}-${number}`;
+  createdDate: string;
   tags: string[];
 }
 
@@ -24,7 +24,7 @@ function ArticleCard({ title, createdDate, tags }: ArticleCardProps) {
               <Hash size={16} />
               {tags.map((tag) => (
                 <span key={tag} className="bg-layer text-layer px-2 py-1">
-                  {tag}
+                  #{tag}
                 </span>
               ))}
             </span>

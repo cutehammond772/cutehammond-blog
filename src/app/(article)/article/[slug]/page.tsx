@@ -23,9 +23,6 @@ export default async function Page({ params }: ArticlePageParams) {
   const title = decodeURIComponent(params.slug);
   const article = await load({ title });
 
-  // Article을 불러오는 데 실패한 경우, 404 Page를 보여준다.
-  if (article.error) notFound();
-
   return (
     <article className={notoSansBold.className}>
       <div className="mb-8 mt-48 flex flex-col justify-end gap-2 pb-4">
@@ -39,7 +36,7 @@ export default async function Page({ params }: ArticlePageParams) {
         <span className="flex flex-row gap-2 text-base">
           {article.tag.map((tag) => (
             <span key={tag} className="bg-layer text-layer px-2 py-1">
-              {tag}
+              #{tag}
             </span>
           ))}
         </span>
