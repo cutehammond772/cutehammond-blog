@@ -7,7 +7,7 @@ import { notoSansMedium } from "@/styles/fonts/notoSans";
 import BlogContainer from "@/app/BlogContainer";
 import ThemePreloadScript from "@/theme/ThemePreloadScript";
 import { interBold } from "@/styles/fonts/inter";
-import ThemeSelection from "./(index)/components/ThemeSelection";
+import ThemeSelection from "./ThemeSelection";
 
 export const metadata: Metadata = {
   title: "개발하는 햄찌",
