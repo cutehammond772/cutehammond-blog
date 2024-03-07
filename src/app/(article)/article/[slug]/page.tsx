@@ -34,7 +34,7 @@ export default async function Page({ params }: ArticlePageParams) {
         </span>
         <span className="flex flex-row flex-wrap gap-2 text-base">
           {article.tag.map((tag) => (
-            <span key={tag} className="bg-layer text-layer px-2 py-1">
+            <span key={tag} className="bg-layer text-layer px-2 py-1 font-bold">
               #{tag}
             </span>
           ))}
