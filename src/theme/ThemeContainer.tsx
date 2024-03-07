@@ -2,21 +2,20 @@
 
 import { useEffect } from "react";
 import { atom, useRecoilValue } from "recoil";
+import { THEMES, Theme } from "./theme";
 
-export const Key = "blog_theme";
-
-export type Theme = "dark" | "light" | "system";
-const themes = ["dark", "light", "system"];
+export const Key = "theme";
 
 function isValid(theme: string | null): theme is Theme {
-  return theme != null && themes.includes(theme);
+  return !!theme && THEMES.includes(theme as Theme);
 }
 
+// Theme 로직은 Browser에서만 돌아가도록 해야 한다.
 const store = typeof window !== "undefined" ? window.localStorage : null;
 
 export const themeState = atom<Theme>({
   key: Key,
-  default: "system",
+  default: "System",
   effects: [
     ({ setSelf, onSet }) => {
       if (store) {
@@ -43,12 +42,13 @@ export default function ThemeContainer({ children }: React.PropsWithChildren) {
   useEffect(() => {
     const dset: ThemeDataSet = document.documentElement.dataset;
 
-    if (theme == "system") {
+    if (theme == "System") {
       const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      dset.theme = sysDark ? "dark" : "light";
-    } else {
-      dset.theme = theme;
+      dset.theme = sysDark ? "Dark" : "Light";
+      return;
     }
+
+    dset.theme = theme;
   }, [theme]);
 
   return <>{children}</>;

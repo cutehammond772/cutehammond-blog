@@ -1,7 +1,5 @@
-"use client";
-
 import { useRecoilState } from "recoil";
-import { themeState } from "./ThemeContainer";
+import { themeState } from "@/theme/ThemeContainer";
 
 export default function useTheme() {
   return useRecoilState(themeState);
