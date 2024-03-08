@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
 import { load } from "@/utils/article/github";
-import { notoSansMedium } from "@/styles/fonts/notoSans";
 import { convertDate } from "@/utils/date";
 
 import ArticleBody from "./components/ArticleBody";
@@ -23,25 +22,30 @@ export default async function Page({ params }: ArticlePageParams) {
   const article = await load({ title });
 
   return (
-    <article className={notoSansMedium.className}>
-      <div className="mt-48 flex flex-col justify-end gap-2 pb-4">
-        <span className="break-keep pb-4 text-3xl font-bold leading-normal md:pb-8 md:text-4xl">
+    <>
+      <div className="bg-beige-300 dark:bg-charcoal-700 flex flex-col items-center gap-2 px-4 pb-4 pt-48">
+        <span className="f1-bold break-keep text-center leading-normal md:pb-8">
           {title}
         </span>
-        <span className="text-sm font-bold md:text-base">
+        <span className="fp-bold text-center">
           {convertDate(article.createdDate)} 생성 (
           {convertDate(article.modifiedDate)} 수정)
         </span>
-        <span className="flex flex-row flex-wrap gap-2 text-sm md:text-base">
+        <span className="fp-bold flex flex-row flex-wrap gap-2">
           {article.tag.map((tag) => (
-            <span key={tag} className="bg-layer text-layer px-2 py-1 font-bold">
-              #{tag}
+            <span
+              key={tag}
+              className="bg-beige-500 dark:bg-charcoal-500 px-2 py-1"
+            >
+              {tag}
             </span>
           ))}
         </span>
         <hr className="bg-layer h-[2px] border-0" />
       </div>
-      <ArticleBody markdown={article.markdown} />
-    </article>
+      <article className="px-4 md:px-0">
+        <ArticleBody markdown={article.markdown} />
+      </article>
+    </>
   );
 }

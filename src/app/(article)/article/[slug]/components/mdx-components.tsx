@@ -5,37 +5,37 @@ import { Code } from "bright";
 
 export const mdxComponents: MDXComponents = {
   a: ({ children, href }) => (
-    <Link href={href || ""} className="text-layer bg-layer p-1">
+    <Link href={href || ""} className="accent p-1">
       {children}
     </Link>
   ),
   h1: ({ children, ...props }) => (
-    <h1 {...props} className="my-4 text-2xl font-bold md:my-8 md:text-4xl">
+    <h1 {...props} className="f1-bold my-4 md:my-8">
       {children}
     </h1>
   ),
   h2: ({ children, ...props }) => (
-    <h2 {...props} className="my-4 text-xl font-bold md:my-8 md:text-2xl">
+    <h2 {...props} className="f2-bold my-4 md:my-8">
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
-    <h3 {...props} className="my-4 text-lg font-bold md:my-8 md:text-xl">
+    <h3 {...props} className="f3-bold my-4 md:my-8">
       {children}
     </h3>
   ),
   p: ({ children, ...props }) => (
-    <p {...props} className="my-4 break-keep text-base leading-8 md:my-8">
+    <p {...props} className="fp-regular my-4 break-keep leading-8 md:my-8">
       {children}
     </p>
   ),
   ul: ({ children, ...props }) => (
-    <ul {...props} className="my-4 list-disc text-base">
+    <ul {...props} className="fp-regular my-4 list-disc">
       {children}
     </ul>
   ),
   ol: ({ children, ...props }) => (
-    <ol {...props} className="my-4 list-decimal text-base">
+    <ol {...props} className="fp-regular my-4 list-decimal">
       {children}
     </ol>
   ),
@@ -45,12 +45,15 @@ export const mdxComponents: MDXComponents = {
     </li>
   ),
   hr: ({ ...props }) => (
-    <hr {...props} className="bg-layer my-4 h-[2px] border-0 md:my-8" />
+    <hr
+      {...props}
+      className="bg-text-900 dark:bg-text-100 my-4 h-[2px] border-0 md:my-8"
+    />
   ),
   blockquote: ({ children, ...props }) => (
     <blockquote
       {...props}
-      className="bg-layer text-layer !first:m-0 p-4 font-bold"
+      className="bg-beige-300 dark:bg-charcoal-700 !first:m-0 p-4"
     >
       {children}
     </blockquote>
