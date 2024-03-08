@@ -9,8 +9,19 @@ import ThemePreloadScript from "@/theme/ThemePreloadScript";
 import ThemeSelection from "./ThemeSelection";
 
 export const metadata: Metadata = {
-  title: "개발하는 햄찌",
-  description: "햄찌는 무한한 가능성을 지닙니다.",
+  title: "cutehammond.dev",
+  description: "front-end developing hamster.",
+  openGraph: {
+    title: "cutehammond.dev",
+    description: "front-end developing hamster.",
+    url: "https://cutehammond.dev",
+    siteName: "cutehammond's dev blog",
+    locale: "ko_KR",
+    type: "website",
+  },
+  icons: {
+    shortcut: "https://cutehammond.dev/favicon.ico",
+  },
 };
 
 export default async function Layout({
