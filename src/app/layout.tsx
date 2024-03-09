@@ -6,9 +6,10 @@ import "@/styles/globals.css";
 
 import BlogContainer from "@/app/components/BlogContainer";
 import ThemePreloadScript from "@/theme/ThemePreloadScript";
-import ThemeSelection from "./components/ThemeSelection";
-import ModalProvider from "../modal/ModalProvider";
-import SettingsButton from "./components/SettingsButton";
+import ModalProvider from "@/modal/ModalProvider";
+
+import ThemeToggle from "./components/theme/ThemeToggle";
+import SettingsButton from "./components/settings/SettingsButton";
 
 export const metadata: Metadata = {
   title: "cutehammond.dev",
@@ -39,13 +40,14 @@ export default async function Layout({
         >
           <ThemePreloadScript />
           <ModalProvider />
+
           {/* Header Section */}
           <header className="sticky top-0 z-10 col-span-1 col-start-2 flex flex-row items-center justify-between bg-beige-100 px-4 py-4 dark:bg-charcoal-900 md:px-0">
             <Link href="/" className="f3-bold self-start">
               cutehammond.dev
             </Link>
             <div className="flex flex-row gap-2">
-              <ThemeSelection />
+              <ThemeToggle />
               <SettingsButton />
             </div>
           </header>

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import { load } from "@/utils/article/github";
+import { list, load } from "@/utils/article/github";
 import { convertDate } from "@/utils/date";
 
 import ArticleBody from "./components/ArticleBody";
@@ -17,13 +17,20 @@ export async function generateMetadata({
   };
 }
 
+// Build Time에 등록된 글을 모두 가져옵니다.
+export async function generateStaticParams() {
+  const articles = await list({});
+
+  return articles.entries.map((title) => ({ slug: encodeURIComponent(title) }));
+}
+
 export default async function Page({ params }: ArticlePageParams) {
   const title = decodeURIComponent(params.slug);
   const article = await load({ title });
 
   return (
     <>
-      <div className="bg-beige-300 dark:bg-charcoal-700 flex flex-col items-center gap-2 px-4 pb-4 pt-48">
+      <div className="flex flex-col items-center gap-2 bg-beige-300 px-4 pb-4 pt-48 dark:bg-charcoal-700">
         <span className="f1-bold break-keep text-center leading-normal md:pb-8">
           {title}
         </span>
@@ -35,7 +42,7 @@ export default async function Page({ params }: ArticlePageParams) {
           {article.tag.map((tag) => (
             <span
               key={tag}
-              className="bg-beige-500 dark:bg-charcoal-500 px-2 py-1"
+              className="bg-beige-500 px-2 py-1 dark:bg-charcoal-500"
             >
               {tag}
             </span>

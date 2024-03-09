@@ -2,9 +2,9 @@
 
 import { THEME_ICONS } from "@/theme/theme";
 import useTheme from "@/theme/useTheme";
-import { ClientOnly } from "../../utils/components/ClientOnly";
+import { ClientOnly } from "@/utils/components/ClientOnly";
 
-export default function ThemeSelection() {
+export default function ThemeToggle() {
   const { theme, toggle } = useTheme();
 
   return (

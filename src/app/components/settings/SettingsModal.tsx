@@ -1,9 +1,10 @@
 "use client";
 
 import useModal from "@/modal/useModal";
-import { RefreshCw, X } from "react-feather";
+import { X } from "react-feather";
+import Refresh from "./option/Refresh";
 
-export default function Settings() {
+export default function SettingsModal() {
   const { close } = useModal();
 
   return (
@@ -19,16 +20,7 @@ export default function Settings() {
 
         {/* Main Section */}
         <div className="flex flex-grow flex-col justify-center">
-          <button
-            title="글 새로고침"
-            className="fp-bold grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-4 bg-beige-300 p-4 text-start dark:bg-charcoal-700"
-          >
-            <RefreshCw className="row-span-full self-center" />
-            <span>글 새로고침</span>
-            <span className="text-text-700 dark:text-text-300">
-              Github에 등록된 글을 다시 불러옵니다.
-            </span>
-          </button>
+          <Refresh />
         </div>
       </div>
     </div>
