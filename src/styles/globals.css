@@ -12,15 +12,15 @@
 @layer utilities {
   /* Headline 1 */
   .f1-bold {
-    @apply text-[48px] font-bold md:text-[64px];
+    @apply text-[48px] font-bold md:text-[56px];
   }
 
   .f1-regular {
-    @apply text-[48px] font-normal md:text-[64px];
+    @apply text-[48px] font-normal md:text-[56px];
   }
 
   .f1-thin {
-    @apply text-[48px] font-thin md:text-[64px];
+    @apply text-[48px] font-thin md:text-[56px];
   }
 
   /* Headline 2 */

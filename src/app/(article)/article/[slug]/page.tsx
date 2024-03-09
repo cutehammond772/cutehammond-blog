@@ -34,11 +34,13 @@ export default async function Page({ params }: ArticlePageParams) {
         <span className="f1-bold break-keep text-center leading-normal md:pb-8">
           {title}
         </span>
-        <span className="fp-bold text-center">
-          {convertDate(article.createdDate)} 생성 (
-          {convertDate(article.modifiedDate)} 수정)
+        <span className="fp-bold flex flex-row gap-2 text-center">
+          {convertDate(article.createdDate)} 생성
+          <span className="text-text-700 dark:text-text-300">
+            ({convertDate(article.modifiedDate)} 수정)
+          </span>
         </span>
-        <span className="fp-bold flex flex-row flex-wrap gap-2">
+        <span className="fp-bold flex flex-row flex-wrap justify-center gap-2">
           {article.tag.map((tag) => (
             <span
               key={tag}

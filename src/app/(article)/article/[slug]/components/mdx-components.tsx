@@ -5,7 +5,10 @@ import { Code } from "bright";
 
 export const mdxComponents: MDXComponents = {
   a: ({ children, href }) => (
-    <Link href={href || ""} className="accent p-1">
+    <Link
+      href={href || ""}
+      className="bg-beige-500 px-2 py-1 dark:bg-charcoal-500"
+    >
       {children}
     </Link>
   ),
@@ -40,23 +43,34 @@ export const mdxComponents: MDXComponents = {
     </ol>
   ),
   li: ({ children, ...props }) => (
-    <li {...props} className="my-2 ml-6">
+    <li {...props} className="my-2 ml-6 md:my-4">
       {children}
     </li>
   ),
   hr: ({ ...props }) => (
     <hr
       {...props}
-      className="bg-text-900 dark:bg-text-100 my-4 h-[2px] border-0 md:my-8"
+      className="my-4 h-[2px] border-0 bg-text-900 dark:bg-text-100 md:my-8"
     />
   ),
   blockquote: ({ children, ...props }) => (
     <blockquote
       {...props}
-      className="bg-beige-300 dark:bg-charcoal-700 !first:m-0 p-4"
+      className="!first:m-0 my-4 bg-beige-300 p-4 dark:bg-charcoal-700 md:my-8"
     >
       {children}
     </blockquote>
   ),
-  pre: Code,
+  pre: ({ ...props }) => (
+    <Code
+      {...props}
+      theme={{
+        dark: "dracula-soft",
+        light: "solarized-light",
+        lightSelector: '[data-theme="Light"]',
+      }}
+      lineNumbers
+      codeClassName="whitespace-pre-wrap"
+    />
+  ),
 };
