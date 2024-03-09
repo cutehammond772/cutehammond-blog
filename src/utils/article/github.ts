@@ -4,13 +4,14 @@ import matter from "gray-matter";
 
 import { decode } from "@/utils/base64";
 import { notFound } from "next/navigation";
+import { unstable_cache } from "next/cache";
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 export type ArticleMetadata = {
   tag: string[];
-  createdDate: Date;
-  modifiedDate: Date;
+  createdDate: string;
+  modifiedDate: string;
 };
 
 export type ArticleListRequest = {
@@ -33,7 +34,7 @@ function isMetadata(target: any): target is ArticleMetadata {
   return "tag" in target && "createdDate" in target && "modifiedDate" in target;
 }
 
-export const list = cache(
+export const list = unstable_cache(
   async ({ draft }: ArticleListRequest): Promise<ArticleListResponse> => {
     try {
       const { data } = await octokit.rest.repos.getContent({
@@ -64,7 +65,7 @@ export const list = cache(
   }
 );
 
-export const load = cache(
+export const load = unstable_cache(
   async ({ title, draft }: ArticleRequest): Promise<ArticleResponse> => {
     try {
       const { data } = await octokit.rest.repos.getContent({

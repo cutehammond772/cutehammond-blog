@@ -9,7 +9,7 @@ export default function ThemeToggle() {
 
   return (
     <ClientOnly>
-      <button className="fp-bold" onClick={toggle}>
+      <button className="fp-bold" title="테마 설정" onClick={toggle}>
         {THEME_ICONS[theme]}
       </button>
     </ClientOnly>
