@@ -2,7 +2,7 @@
 
 import { THEME_ICONS } from "@/theme/theme";
 import useTheme from "@/theme/useTheme";
-import { ClientOnly } from "./ClientOnly";
+import { ClientOnly } from "../../utils/components/ClientOnly";
 
 export default function ThemeSelection() {
   const { theme, toggle } = useTheme();

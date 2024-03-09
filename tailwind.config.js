@@ -16,7 +16,7 @@ module.exports = {
         },
         text: {
           100: "#EEEEEE",
-          300: "#303030",
+          300: "#CDCDCD",
           500: "#787878",
           700: "#303030",
           900: "#1F1F1F",
@@ -24,5 +24,5 @@ module.exports = {
       },
     },
   },
-  content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
 };
