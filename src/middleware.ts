@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
 
   for (const { matcher, middleware } of middlewares) {
     if (!matcher(pathname)) continue;
-    [next, response] = [...(await middleware(request, response))];
+    response = await middleware(request, response);
 
     if (!next) return response;
   }

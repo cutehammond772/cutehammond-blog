@@ -13,17 +13,17 @@ export const mdxComponents: MDXComponents = {
     </Link>
   ),
   h1: ({ children, ...props }) => (
-    <h1 {...props} className="f1-bold my-4 md:my-8">
+    <h1 {...props} className="f1-bold my-8 break-keep md:my-12">
       {children}
     </h1>
   ),
   h2: ({ children, ...props }) => (
-    <h2 {...props} className="f2-bold my-4 md:my-8">
+    <h2 {...props} className="f2-bold my-8 break-keep md:my-12">
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
-    <h3 {...props} className="f3-bold my-4 md:my-8">
+    <h3 {...props} className="f3-bold my-6 break-keep md:my-10">
       {children}
     </h3>
   ),
@@ -33,17 +33,17 @@ export const mdxComponents: MDXComponents = {
     </p>
   ),
   ul: ({ children, ...props }) => (
-    <ul {...props} className="fp-regular my-4 list-disc">
+    <ul {...props} className="fp-regular my-4 list-disc break-keep">
       {children}
     </ul>
   ),
   ol: ({ children, ...props }) => (
-    <ol {...props} className="fp-regular my-4 list-decimal">
+    <ol {...props} className="fp-regular my-4 list-decimal break-keep">
       {children}
     </ol>
   ),
   li: ({ children, ...props }) => (
-    <li {...props} className="my-2 ml-6 md:my-4">
+    <li {...props} className="my-2 ml-6 break-keep md:my-4">
       {children}
     </li>
   ),

@@ -1,10 +1,9 @@
-import { cache } from "react";
+import { notFound } from "next/navigation";
 import { Octokit } from "octokit";
 import matter from "gray-matter";
 
 import { decode } from "@/utils/base64";
-import { notFound } from "next/navigation";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
@@ -34,7 +33,7 @@ function isMetadata(target: any): target is ArticleMetadata {
   return "tag" in target && "createdDate" in target && "modifiedDate" in target;
 }
 
-export const list = unstable_cache(
+export const list = cache(
   async ({ draft }: ArticleListRequest): Promise<ArticleListResponse> => {
     try {
       const { data } = await octokit.rest.repos.getContent({
@@ -65,7 +64,7 @@ export const list = unstable_cache(
   }
 );
 
-export const load = unstable_cache(
+export const load = cache(
   async ({ title, draft }: ArticleRequest): Promise<ArticleResponse> => {
     try {
       const { data } = await octokit.rest.repos.getContent({

@@ -1,26 +1,18 @@
 import crypto from "crypto";
-import {
-  EncryptionPairResult,
-  Invalid,
-  InvalidResult,
-  PasswordEncryptionResult,
-  SALT_LENGTH,
-  SALT_ROUNDS,
-  SaltGenResult,
-} from "./types";
+import { SALT_LENGTH, SALT_ROUNDS } from "./types";
+import PasswordEncryptionError from "./errors/PasswordEncryptionError";
+import SaltCreationError from "./errors/SaltCreationError";
 
 /**
  * 비밀번호를 암호화하기 위한 Random Salt를 생성한다.
  */
-export async function createRandomSalt(): Promise<
-  SaltGenResult | InvalidResult
-> {
-  return new Promise((resolve) => {
+export async function createRandomSalt() {
+  return new Promise<string>((resolve, reject) => {
     crypto.randomBytes(SALT_LENGTH, (error, buf) => {
       if (error) {
-        resolve(Invalid("SALT_CREATION_FAILED"));
+        reject(new SaltCreationError(503));
       } else {
-        resolve({ valid: true, salt: buf.toString("base64") });
+        resolve(buf.toString("base64"));
       }
     });
   });
@@ -29,16 +21,13 @@ export async function createRandomSalt(): Promise<
 /**
  * 비밀번호를 암호화한다.
  */
-export async function encrypt(
-  salt: string,
-  pwd: string
-): Promise<PasswordEncryptionResult | InvalidResult> {
-  return new Promise((resolve) => {
+export async function encrypt(salt: string, pwd: string) {
+  return new Promise<string>((resolve, reject) => {
     crypto.pbkdf2(pwd, salt, SALT_ROUNDS, SALT_LENGTH, "sha512", (err, buf) => {
       if (err) {
-        resolve(Invalid("PASSWORD_ENCRYPTION_FAILED"));
+        reject(new PasswordEncryptionError(503));
       } else {
-        resolve({ valid: true, pwd: buf.toString("base64") });
+        resolve(buf.toString("base64"));
       }
     });
   });
@@ -47,20 +36,9 @@ export async function encrypt(
 /**
  * 암호화된 비밀번호와 Salt 쌍을 생성한다.
  */
-export async function createEncryptionPair(
-  pwd: string
-): Promise<EncryptionPairResult | InvalidResult> {
-  const saltCreation = await createRandomSalt();
+export async function createEncryptionPair(pwd: string) {
+  const salt = await createRandomSalt();
+  const encryptedPwd = await encrypt(salt, pwd);
 
-  if (!saltCreation.valid) {
-    return Invalid("PAIR_CREATION_FAILED", ...saltCreation.reasons);
-  }
-
-  const encryption = await encrypt(saltCreation.salt, pwd);
-
-  if (!encryption.valid) {
-    return Invalid("PAIR_CREATION_FAILED", ...encryption.reasons);
-  }
-
-  return { valid: true, salt: saltCreation.salt, pwd: encryption.pwd };
+  return { salt, pwd: encryptedPwd };
 }
