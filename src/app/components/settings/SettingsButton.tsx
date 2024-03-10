@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Settings as Setting } from "react-feather";
 import Modal from "@/modal/Modal";
-import SettingsModal from "./SettingsModal";
+import SettingsModal from "./modal/SettingsModal";
 
 export default function SettingsButton() {
   const [visible, setVisible] = useState(false);

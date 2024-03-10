@@ -1,13 +1,17 @@
 "use client";
 
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useSetRecoilState } from "recoil";
-import { modalProviderState } from "./ModalProvider";
+import { useRecoilState } from "recoil";
+import { modalSelector } from "./ModalProvider";
 
 export class ModalProviderNotFoundError extends Error {}
 
-export const ModalContext = createContext({ close: () => {} });
+export const ModalContext = createContext({
+  close: () => {},
+  hide: () => {},
+  show: () => {},
+});
 
 export default function Modal({
   children,
@@ -17,34 +21,33 @@ export default function Modal({
   close: () => void;
 }) {
   const [isClient, setIsClient] = useState(false);
-  const [modalKey, setModalKey] = useState<string>();
-  const setModalProvider = useSetRecoilState(modalProviderState);
+  const modalKey = useRef<string>("modal-" + Date.now());
+  const [modal, setModal] = useRecoilState(modalSelector(modalKey.current));
 
   // Client Only
   useEffect(() => {
     setIsClient(true);
-
-    // Modal Key 생성
-    const key = "modal-" + Date.now();
-    setModalKey(key);
   }, []);
 
   // Modal Provider에 등록
   useEffect(() => {
-    if (!modalKey) return;
+    if (modal) return;
 
-    setModalProvider((modalProvider) => ({ ...modalProvider, [modalKey]: {} }));
-  }, [modalKey, setModalProvider]);
+    setModal((prev) => ({ ...prev, hide: false }));
+  }, [modal, setModal]);
 
   const _close = useCallback(() => {
-    if (!modalKey) return;
-
-    setModalProvider(({ [modalKey]: target, ...modalProvider }) => ({
-      ...modalProvider,
-    }));
-
+    setModal((prev) => ({ ...prev, close: true }));
     close();
-  }, [modalKey, close, setModalProvider]);
+  }, [setModal, close]);
+
+  const _hide = useCallback(() => {
+    setModal((prev) => ({ ...prev, hide: true }));
+  }, [setModal]);
+
+  const _show = useCallback(() => {
+    setModal((prev) => ({ ...prev, hide: false }));
+  }, [setModal]);
 
   if (!isClient) return null;
 
@@ -55,8 +58,12 @@ export default function Modal({
     throw new ModalProviderNotFoundError("Modal Provider Not Found");
 
   return createPortal(
-    <ModalContext.Provider value={{ close: _close }}>
-      {children}
+    <ModalContext.Provider value={{ close: _close, hide: _hide, show: _show }}>
+      <div
+        className={`${modal?.hide ? "invisible" : "visible"} absolute h-screen w-screen`}
+      >
+        {children}
+      </div>
     </ModalContext.Provider>,
     element
   );

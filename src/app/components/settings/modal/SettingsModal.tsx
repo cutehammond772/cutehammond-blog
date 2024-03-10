@@ -2,7 +2,9 @@
 
 import useModal from "@/modal/useModal";
 import { X } from "react-feather";
-import Refresh from "./option/Refresh";
+
+import Refresh from "../option/Refresh";
+import Auth from "../option/Auth";
 
 export default function SettingsModal() {
   const { close } = useModal();
@@ -19,8 +21,9 @@ export default function SettingsModal() {
         </div>
 
         {/* Main Section */}
-        <div className="flex flex-grow flex-col justify-center">
+        <div className="flex flex-grow flex-col justify-center gap-4">
           <Refresh />
+          <Auth />
         </div>
       </div>
     </div>
