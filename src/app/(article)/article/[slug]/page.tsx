@@ -21,7 +21,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const articles = await list({});
 
-  return articles.entries.map((title) => ({ slug: title }));
+  return articles.entries.map((title) => ({ slug: encodeURIComponent(title) }));
 }
 
 export default async function Page({ params }: ArticlePageParams) {
