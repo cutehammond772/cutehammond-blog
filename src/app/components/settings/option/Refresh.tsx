@@ -1,8 +1,9 @@
 "use client";
 
-import refresh from "@/actions/refresh";
 import { useCallback } from "react";
 import { RefreshCw } from "react-feather";
+
+import refresh from "@/actions/article/refresh";
 
 export default function Refresh() {
   const handler = useCallback(async () => {
