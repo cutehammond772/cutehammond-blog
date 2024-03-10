@@ -51,14 +51,14 @@
 
   /* Paragraph */
   .fp-bold {
-    @apply text-[16px] font-bold;
+    @apply text-[16px] font-bold md:text-[20px];
   }
 
   .fp-regular {
-    @apply text-[16px] font-normal;
+    @apply text-[16px] font-normal md:text-[20px];
   }
 
   .fp-thin {
-    @apply text-[16px] font-thin;
+    @apply text-[16px] font-thin md:text-[20px];
   }
 }

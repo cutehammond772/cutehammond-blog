@@ -1,7 +1,7 @@
 import { memo } from "react";
 import Link from "next/link";
 
-import { Clock, Hash } from "react-feather";
+import { Clock } from "react-feather";
 
 export interface ArticleCardProps {
   title: string;
@@ -12,7 +12,7 @@ export interface ArticleCardProps {
 function ArticleCard({ title, createdDate, tags }: ArticleCardProps) {
   return (
     <Link href={`/article/${title}`}>
-      <div className="bg-beige-300 dark:bg-charcoal-700 flex flex-col justify-end gap-2 p-4">
+      <div className="flex min-h-full flex-col justify-between gap-2 bg-beige-300 p-4 dark:bg-charcoal-700">
         <div className="f3-bold">{title}</div>
         <div className="flex flex-col gap-2">
           <span className="flex flex-row items-center gap-2">
@@ -22,7 +22,7 @@ function ArticleCard({ title, createdDate, tags }: ArticleCardProps) {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className=" bg-beige-500 dark:bg-charcoal-500 shrink-0 px-2 py-1"
+                className="bg-beige-500 px-2 py-1 dark:bg-charcoal-500"
               >
                 {tag}
               </span>

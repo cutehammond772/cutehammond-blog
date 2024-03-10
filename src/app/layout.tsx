@@ -36,7 +36,7 @@ export default async function Layout({
     <BlogContainer>
       <html lang="ko" suppressHydrationWarning>
         <body
-          className={`${pretendard.className} grid min-h-screen grid-cols-[0_1fr_0] grid-rows-[auto_1fr_auto] bg-beige-100 text-text-900 dark:bg-charcoal-900 dark:text-text-100 md:grid-cols-[1fr_3fr_1fr]`}
+          className={`${pretendard.className} grid min-h-screen grid-cols-[0_1fr_0] grid-rows-[auto_1fr_auto] bg-beige-100 text-text-900 dark:bg-charcoal-900 dark:text-text-100 md:grid-cols-[1fr_4fr_1fr] lg:grid-cols-[1fr_2fr_1fr]`}
         >
           <ThemePreloadScript />
           <ModalProvider />

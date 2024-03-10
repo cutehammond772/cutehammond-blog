@@ -1,10 +1,9 @@
-import { cache } from "react";
+import { unstable_cache } from "next/cache";
+import { notFound } from "next/navigation";
 import { Octokit } from "octokit";
 import matter from "gray-matter";
 
 import { decode } from "@/utils/base64";
-import { notFound } from "next/navigation";
-import { unstable_cache } from "next/cache";
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
