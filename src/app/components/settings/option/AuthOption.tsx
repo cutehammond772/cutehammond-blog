@@ -7,7 +7,7 @@ import { Key } from "react-feather";
 import AuthModal from "../modal/AuthModal";
 import useAuth from "@/auth/useAuth";
 
-export default function Auth() {
+export default function AuthOption() {
   // Settings Modal에 접근할 수 있습니다.
   const { hide, show } = useModal();
   const [visible, setVisible] = useState(false);
