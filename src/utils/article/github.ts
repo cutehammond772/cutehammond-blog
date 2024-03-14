@@ -50,7 +50,7 @@ export const list = cache(
       });
 
       // TODO: Test Logic 필요
-      if (!Array.isArray(data)) throw new Error();
+      if (!Array.isArray(data)) return { error: true, httpCode: 503 };
 
       return {
         error: false,

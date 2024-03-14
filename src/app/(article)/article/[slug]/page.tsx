@@ -22,7 +22,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const listPayload = await list({});
 
-  if (listPayload.error) return {};
+  if (listPayload.error) return [];
 
   return listPayload.entries.map((title) => ({ slug: encodeURI(title) }));
 }
