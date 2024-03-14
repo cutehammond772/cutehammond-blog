@@ -21,12 +21,10 @@ export default async function Page() {
   );
 
   // 날짜 순으로 정렬한다. (가장 늦게 나온 게시글이 먼저 오도록 한다.)
-  articles
-    .filter((a): a is ArticleResponse => !a.error)
-    .sort(
-      (a, b) =>
-        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-    );
+  articles.sort(
+    (a, b) =>
+      new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+  );
 
   return (
     <>
