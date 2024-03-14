@@ -1,11 +1,18 @@
 "use client";
 
+import React, { useState, createContext, useEffect, useCallback } from "react";
 import validate from "@/actions/auth/validate";
-import { createContext, useEffect, useState } from "react";
 
-export const AuthContext = createContext<{ id: string | null; load: boolean }>({
+export interface AuthContext {
+  id: string | null;
+  state: "notLoaded" | "isLoading" | "hasLoaded";
+  refresh: () => void;
+}
+
+export const AuthProviderContext = createContext<AuthContext>({
   id: null,
-  load: false,
+  state: "notLoaded",
+  refresh: () => {},
 });
 
 export default function AuthProvider({
@@ -13,24 +20,31 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [id, setID] = useState<string | null>(null);
-  const [load, setLoad] = useState(false);
+  const [profile, setProfile] = useState<{
+    id: string | null;
+    state: "notLoaded" | "isLoading" | "hasLoaded";
+  }>({
+    id: null,
+    state: "notLoaded",
+  });
 
-  // 처음 로드 시 기존 인증 정보를 불러옵니다.
-  useEffect(() => {
+  const refresh = useCallback(() => {
+    if (profile.state === "isLoading") return;
+
+    setProfile({ id: null, state: "isLoading" });
+
     (async () => {
-      setLoad(false);
       const result = await validate();
 
-      if (result.error === false) {
-        setID(result.payload);
-      }
-
-      setLoad(true);
+      if (result.error === false)
+        setProfile({ id: result.payload, state: "hasLoaded" });
+      else setProfile({ id: null, state: "hasLoaded" });
     })();
-  }, []);
+  }, [profile]);
 
   return (
-    <AuthContext.Provider value={{ id, load }}>{children}</AuthContext.Provider>
+    <AuthProviderContext.Provider value={{ ...profile, refresh }}>
+      {children}
+    </AuthProviderContext.Provider>
   );
 }

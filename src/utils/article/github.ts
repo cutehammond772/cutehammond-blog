@@ -13,11 +13,13 @@ export type ArticleMetadata = {
   modifiedDate: string;
 };
 
+export type ErrorResponse = { error: true; httpCode: number; reason?: string };
+
 export type ArticleListRequest = {
   draft?: boolean;
 };
 
-export type ArticleListResponse = { entries: string[] };
+export type ArticleListResponse = { error: false; entries: string[] };
 
 export type ArticleRequest = {
   title: string;
@@ -25,6 +27,7 @@ export type ArticleRequest = {
 };
 
 export type ArticleResponse = {
+  error: false;
   title: string;
   markdown: string;
 } & ArticleMetadata;
@@ -34,7 +37,9 @@ function isMetadata(target: any): target is ArticleMetadata {
 }
 
 export const list = cache(
-  async ({ draft }: ArticleListRequest): Promise<ArticleListResponse> => {
+  async ({
+    draft,
+  }: ArticleListRequest): Promise<ErrorResponse | ArticleListResponse> => {
     try {
       const { data } = await octokit.rest.repos.getContent({
         // TODO: GITHUB 의존성 분리 작업 필요
@@ -48,6 +53,7 @@ export const list = cache(
       if (!Array.isArray(data)) throw new Error();
 
       return {
+        error: false,
         entries: data
           .filter((entry) => entry.name.endsWith(".mdx"))
           .map((entry) => entry.name.replace(".mdx", "")),
@@ -55,17 +61,20 @@ export const list = cache(
     } catch (error) {
       if (error instanceof Error) {
         // Article 디렉토리가 존재하지 않으면 404를 반환한다.
-        if (error.message.includes("Not Found")) notFound();
-        else throw error;
+        if (error.message.includes("Not Found"))
+          return { error: true, httpCode: 404 };
       }
 
-      throw error;
+      return { error: true, httpCode: 503 };
     }
   }
 );
 
 export const load = cache(
-  async ({ title, draft }: ArticleRequest): Promise<ArticleResponse> => {
+  async ({
+    title,
+    draft,
+  }: ArticleRequest): Promise<ErrorResponse | ArticleResponse> => {
     try {
       const { data } = await octokit.rest.repos.getContent({
         owner: "cutehammond772",
@@ -82,15 +91,15 @@ export const load = cache(
 
       if (!isMetadata(frontMatter)) throw new Error();
 
-      return { title, markdown, ...frontMatter };
+      return { error: false, title, markdown, ...frontMatter };
     } catch (error) {
       if (error instanceof Error) {
         // Article이 존재하지 않으면 404를 반환한다.
-        if (error.message.includes("Not Found")) notFound();
-        else throw error;
+        if (error.message.includes("Not Found"))
+          return { error: true, httpCode: 404 };
       }
 
-      throw error;
+      return { error: true, httpCode: 503 };
     }
   }
 );

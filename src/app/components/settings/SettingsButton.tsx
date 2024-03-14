@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Settings as Setting } from "react-feather";
+
 import Modal from "@/modal/Modal";
 import SettingsModal from "./modal/SettingsModal";
 

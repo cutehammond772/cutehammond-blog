@@ -7,7 +7,7 @@ import refresh from "@/actions/article/refresh";
 
 export default function ArticleRefreshOption({ article }: { article: string }) {
   const handler = useCallback(async () => {
-    await refresh({ type: "page", title: article });
+    await refresh({ type: "page", title: encodeURI(article) });
 
     location.reload();
   }, [article]);
