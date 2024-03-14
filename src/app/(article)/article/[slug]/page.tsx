@@ -24,7 +24,7 @@ export async function generateStaticParams() {
 
   if (listPayload.error) return [];
 
-  return listPayload.entries.map((title) => ({ slug: encodeURI(title) }));
+  return listPayload.entries.map((title) => ({ slug: title }));
 }
 
 export default async function Page({ params }: ArticlePageParams) {
