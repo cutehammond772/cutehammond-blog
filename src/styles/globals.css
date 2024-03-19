@@ -12,41 +12,41 @@
 @layer utilities {
   /* Headline 1 */
   .f1-bold {
-    @apply text-[48px] font-bold md:text-[56px];
+    @apply text-[32px] font-bold md:text-[40px];
   }
 
   .f1-regular {
-    @apply text-[48px] font-normal md:text-[56px];
+    @apply text-[32px] font-normal md:text-[40px];
   }
 
   .f1-thin {
-    @apply text-[48px] font-thin md:text-[56px];
+    @apply text-[32px] font-thin md:text-[40px];
   }
 
   /* Headline 2 */
   .f2-bold {
-    @apply text-[32px] font-bold md:text-[40px];
+    @apply text-[24px] font-bold md:text-[32px];
   }
 
   .f2-regular {
-    @apply text-[32px] font-normal md:text-[40px];
+    @apply text-[24px] font-normal md:text-[32px];
   }
 
   .f2-thin {
-    @apply text-[32px] font-thin md:text-[40px];
+    @apply text-[24px] font-thin md:text-[32px];
   }
 
   /* Headline 3 */
   .f3-bold {
-    @apply text-[24px] font-bold md:text-[32px];
+    @apply text-[20px] font-bold md:text-[24px];
   }
 
   .f3-regular {
-    @apply text-[24px] font-normal md:text-[32px];
+    @apply text-[20px] font-normal md:text-[24px];
   }
 
   .f3-thin {
-    @apply text-[24px] font-thin md:text-[32px];
+    @apply text-[20px] font-thin md:text-[24px];
   }
 
   /* Paragraph */
