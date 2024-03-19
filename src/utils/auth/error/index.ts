@@ -11,4 +11,3 @@ export { default as UserAlreadyAuthenticatedError } from "./UserAlreadyAuthentic
 export { default as UserAlreadyRegisteredError } from "./UserAlreadyRegisteredError";
 export { default as UserNotAuthenticatedError } from "./UserNotAuthenticatedError";
 export { default as UserNotFoundError } from "./UserNotFoundError";
-export { default as HTTPError } from "./HTTPError";

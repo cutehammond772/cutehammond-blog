@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   if (!secret) throw new InvalidSecretError(503);
 
   // Access Token을 통해 사용자 검증을 진행한다.
-  const id = await validate();
+  await validate();
 
   /**
    * Http-Only Cookie로 설정된 Refresh Token이다.

@@ -1,104 +1,93 @@
 import { cache } from "react";
-import matter from "gray-matter";
 import { Octokit } from "octokit";
 
+import matter from "gray-matter";
 import { decode } from "@/utils/base64";
+import { ArticleListLoader, ArticleLoader, isMetadata } from ".";
+
+import {
+  ArticleDirectoryNotFoundError,
+  ArticleError,
+  ArticleNotFoundError,
+  InvalidArticleDirectoryError,
+  InvalidArticleError,
+} from "./error";
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
-export type ArticleMetadata = {
-  tag: string[];
-  createdDate: string;
-  modifiedDate: string;
-};
+const ARTICLE_SOURCE = "Github";
 
-export type ErrorResponse = { error: true; httpCode: number; reason?: string };
+// TODO: Github Data를 별도로 관리해야 함
+const userData = {
+  user: "cutehammond772",
+  repository: "blog-articles",
+  path: "articles",
+} as const;
 
-export type ArticleListRequest = {
-  draft?: boolean;
-};
+export const list: ArticleListLoader = cache(async ({ draft }) => {
+  try {
+    const { data } = await octokit.rest.repos.getContent({
+      owner: userData.user,
+      repo: userData.repository,
+      path: userData.path,
+      ref: draft ? "draft" : undefined,
+    });
 
-export type ArticleListResponse = { error: false; entries: string[] };
+    /* Case. Article Directory의 위치가 Directory가 아닌 경우 */
+    if (!Array.isArray(data))
+      throw new InvalidArticleDirectoryError(ARTICLE_SOURCE, 400);
 
-export type ArticleRequest = {
-  title: string;
-  draft?: boolean;
-};
+    return {
+      articles: data
+        .filter((entry) => entry.name.endsWith(".mdx"))
+        .map((entry) => entry.name.replace(".mdx", "")),
+    };
+  } catch (error) {
+    if (error instanceof ArticleError) throw error;
 
-export type ArticleResponse = {
-  error: false;
-  title: string;
-  markdown: string;
-} & ArticleMetadata;
-
-function isMetadata(target: any): target is ArticleMetadata {
-  return "tag" in target && "createdDate" in target && "modifiedDate" in target;
-}
-
-export const list = cache(
-  async ({
-    draft,
-  }: ArticleListRequest): Promise<ErrorResponse | ArticleListResponse> => {
-    try {
-      const { data } = await octokit.rest.repos.getContent({
-        // TODO: GITHUB 의존성 분리 작업 필요
-        owner: "cutehammond772",
-        path: "articles",
-        repo: "blog-articles",
-        ref: draft ? "draft" : undefined,
-      });
-
-      // TODO: Test Logic 필요
-      if (!Array.isArray(data)) return { error: true, httpCode: 503 };
-
-      return {
-        error: false,
-        entries: data
-          .filter((entry) => entry.name.endsWith(".mdx"))
-          .map((entry) => entry.name.replace(".mdx", "")),
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        // Article 디렉토리가 존재하지 않으면 404를 반환한다.
-        if (error.message.includes("Not Found"))
-          return { error: true, httpCode: 404 };
-      }
-
-      return { error: true, httpCode: 503 };
+    if (error instanceof Error) {
+      /* Case. Article Directory가 존재하지 않는 경우 */
+      if (error.message.includes("Not Found"))
+        throw new ArticleDirectoryNotFoundError(ARTICLE_SOURCE, 404);
     }
+
+    /* Case. 기타 Error */
+    throw new InvalidArticleDirectoryError(ARTICLE_SOURCE, 500);
   }
-);
+});
 
-export const load = cache(
-  async ({
-    title,
-    draft,
-  }: ArticleRequest): Promise<ErrorResponse | ArticleResponse> => {
-    try {
-      const { data } = await octokit.rest.repos.getContent({
-        owner: "cutehammond772",
-        path: `articles/${title}.mdx`,
-        repo: "blog-articles",
-        ref: draft ? "draft" : undefined,
-      });
+export const load: ArticleLoader = cache(async ({ title, draft }) => {
+  try {
+    const { data } = await octokit.rest.repos.getContent({
+      owner: userData.user,
+      path: `${userData.path}/${title}.mdx`,
+      repo: userData.repository,
+      ref: draft ? "draft" : undefined,
+    });
 
-      if (!("content" in data)) throw new Error();
+    /* Case. Github API로 가져온 data에 content가 존재하지 않을 경우 */
+    if (!("content" in data))
+      throw new InvalidArticleError(ARTICLE_SOURCE, 500);
 
-      const { content: markdown, data: frontMatter } = matter(
-        decode(data.content)
-      );
+    const { content: markdown, data: frontMatter } = matter(
+      decode(data.content)
+    );
 
-      if (!isMetadata(frontMatter)) throw new Error();
+    /* Case. Article의 정보가 유효하지 않을 경우 */
+    if (!isMetadata(frontMatter))
+      throw new InvalidArticleError(ARTICLE_SOURCE, 500);
 
-      return { error: false, title, markdown, ...frontMatter };
-    } catch (error) {
-      if (error instanceof Error) {
-        // Article이 존재하지 않으면 404를 반환한다.
-        if (error.message.includes("Not Found"))
-          return { error: true, httpCode: 404 };
-      }
+    return { title, markdown, ...frontMatter };
+  } catch (error) {
+    if (error instanceof ArticleError) throw error;
 
-      return { error: true, httpCode: 503 };
+    if (error instanceof Error) {
+      /* Case. Article Directory가 존재하지 않는 경우 */
+      if (error.message.includes("Not Found"))
+        throw new ArticleNotFoundError(ARTICLE_SOURCE, 404);
     }
+
+    /* Case. 기타 Error */
+    throw new InvalidArticleError(ARTICLE_SOURCE, 500);
   }
-);
+});

@@ -1,32 +1,24 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/auth";
 
-import { ServerResponse } from "@/utils/server";
-import { HTTPError, UserNotAuthenticatedError } from "@/utils/auth/error";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/auth";
+import { UserNotAuthenticatedError } from "@/utils/auth/error";
 
 import validate from "./validate";
+import { actionHandler } from "@/utils/server";
 
-export default async function logout(): Promise<ServerResponse> {
-  try {
-    const validation = await validate();
+async function logout() {
+  const validation = await validate();
 
-    // 관리자가 인증 된 상태가 아니면 로그아웃을 할 수 없다.
-    if (validation.error) throw new UserNotAuthenticatedError(400);
+  // 관리자가 인증 된 상태가 아니면 로그아웃을 할 수 없다.
+  if (validation.error) throw new UserNotAuthenticatedError(400);
 
-    // Token을 삭제한다.
-    const cookie = cookies();
+  // Token을 삭제한다.
+  const cookie = cookies();
 
-    cookie.delete(ACCESS_TOKEN);
-    cookie.delete(REFRESH_TOKEN);
-
-    return { error: false };
-  } catch (e) {
-    if (e instanceof HTTPError) {
-      return { error: e.name, httpCode: e.httpCode };
-    }
-
-    return { error: "UNKNOWN" };
-  }
+  cookie.delete(ACCESS_TOKEN);
+  cookie.delete(REFRESH_TOKEN);
 }
+
+export default actionHandler(logout);

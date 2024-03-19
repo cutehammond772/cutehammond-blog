@@ -1,15 +1,27 @@
-export type ServerResponseWithPayload<T> =
+import HTTPError from "./HTTPError";
+
+export type ServerResponse<T> =
   | { error: false; payload: T }
-  | { error: "UNKNOWN" }
+  | { error: true; name: "unknown" }
   | {
-      error: string;
+      error: true;
+      name: string;
       httpCode: number;
     };
 
-export type ServerResponse =
-  | { error: false }
-  | { error: "UNKNOWN" }
-  | {
-      error: string;
-      httpCode: number;
-    };
+export function actionHandler<P = void, Q = void>(
+  func: (payload: P) => Promise<Q>
+): (payload: P) => Promise<ServerResponse<Q>> {
+  return async (payload) => {
+    try {
+      const result = await func(payload);
+      return { error: false, payload: result };
+    } catch (e) {
+      if (e instanceof HTTPError) {
+        return { error: true, name: e.name, httpCode: e.httpCode };
+      }
+
+      return { error: true, name: "unknown" };
+    }
+  };
+}

@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { list, load } from "@/utils/article/github";
 import { convertDate } from "@/utils/date";
@@ -18,20 +17,14 @@ export async function generateMetadata({
   };
 }
 
-// Build Time에 등록된 글을 모두 가져옵니다.
+// 등록된 글을 모두 가져옵니다.
 export async function generateStaticParams() {
-  const listPayload = await list({});
-
-  if (listPayload.error) return [];
-
-  return listPayload.entries.map((title) => ({ slug: title }));
+  return (await list({})).articles.map((title) => ({ slug: title }));
 }
 
 export default async function Page({ params }: ArticlePageParams) {
   const title = decodeURI(params.slug);
   const article = await load({ title });
-
-  if (article.error) notFound();
 
   return (
     <>
