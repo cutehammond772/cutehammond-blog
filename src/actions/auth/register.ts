@@ -3,10 +3,6 @@
 import { cookies } from "next/headers";
 import { exists, set } from "@/utils/db";
 
-import InvalidSecretError from "@/utils/auth/errors/InvalidSecretError";
-import ProductionModeProhibitedError from "@/utils/auth/errors/ProductionModeProhibitedError";
-import UserAlreadyRegisteredError from "@/utils/auth/errors/UserAlreadyRegisteredError";
-
 import { createToken } from "@/utils/auth/token";
 import { createEncryptionPair } from "@/utils/auth/encryption";
 import {
@@ -16,9 +12,14 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_EXP,
   SALT_KEY,
-} from "@/utils/auth/types";
-import HTTPError from "@/utils/auth/errors/HTTPError";
-import { ServerResponse } from "@/utils/error";
+} from "@/utils/auth";
+import { ServerResponse } from "@/utils/server";
+import {
+  HTTPError,
+  InvalidSecretError,
+  ProductionModeProhibitedError,
+  UserAlreadyRegisteredError,
+} from "@/utils/auth/error";
 
 const production = process.env.NODE_ENV == "production";
 

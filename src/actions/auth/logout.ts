@@ -1,11 +1,11 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/auth/types";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/utils/auth";
 
-import UserNotAuthenticatedError from "@/utils/auth/errors/UserNotAuthenticatedError";
-import HTTPError from "@/utils/auth/errors/HTTPError";
-import { ServerResponse } from "@/utils/error";
+import { ServerResponse } from "@/utils/server";
+import { HTTPError, UserNotAuthenticatedError } from "@/utils/auth/error";
+
 import validate from "./validate";
 
 export default async function logout(): Promise<ServerResponse> {

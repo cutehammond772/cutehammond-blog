@@ -9,13 +9,15 @@ import {
   ACCESS_TOKEN_EXP,
   REFRESH_TOKEN,
   REFRESH_TOKEN_EXP,
-} from "@/utils/auth/types";
+} from "@/utils/auth";
 
-import InvalidSecretError from "@/utils/auth/errors/InvalidSecretError";
-import InvalidUserError from "@/utils/auth/errors/InvalidUserError";
-import InvalidTokenError from "@/utils/auth/errors/InvalidTokenError";
-import { ServerResponse } from "@/utils/error";
-import HTTPError from "@/utils/auth/errors/HTTPError";
+import { ServerResponse } from "@/utils/server";
+import {
+  HTTPError,
+  InvalidSecretError,
+  InvalidTokenError,
+  InvalidUserError,
+} from "@/utils/auth/error";
 
 const production = process.env.NODE_ENV == "production";
 

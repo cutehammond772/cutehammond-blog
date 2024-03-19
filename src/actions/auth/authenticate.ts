@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { exists, get, set } from "@/utils/db";
+
 import validate from "./validate";
 
 import {
@@ -11,16 +12,19 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_EXP,
   SALT_KEY,
-} from "@/utils/auth/types";
+} from "@/utils/auth";
+
+import { ServerResponse } from "@/utils/server";
 import { encrypt } from "@/utils/auth/encryption";
 import { createToken } from "@/utils/auth/token";
 
-import UserNotFoundError from "@/utils/auth/errors/UserNotFoundError";
-import UserAlreadyAuthenticatedError from "@/utils/auth/errors/UserAlreadyAuthenticatedError";
-import AuthenticationError from "@/utils/auth/errors/AuthenticationError";
-import InvalidSecretError from "@/utils/auth/errors/InvalidSecretError";
-import HTTPError from "@/utils/auth/errors/HTTPError";
-import { ServerResponse } from "@/utils/error";
+import {
+  AuthenticationError,
+  HTTPError,
+  InvalidSecretError,
+  UserAlreadyAuthenticatedError,
+  UserNotFoundError,
+} from "@/utils/auth/error";
 
 const production = process.env.NODE_ENV == "production";
 

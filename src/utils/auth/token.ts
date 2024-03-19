@@ -5,10 +5,10 @@ import {
   REFRESH_TOKEN,
   TOKEN_ISSUER,
   TokenProfile,
-} from "@/utils/auth/types";
+} from "@/utils/auth";
 
-import TokenCreationError from "./errors/TokenCreationError";
-import TokenValidationError from "./errors/TokenValidationError";
+import TokenCreationError from "./error/TokenCreationError";
+import TokenValidationError from "./error/TokenValidationError";
 
 /**
  * 특정 프로파일에 따라 Token을 생성한다.

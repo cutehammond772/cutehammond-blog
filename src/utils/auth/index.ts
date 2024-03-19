@@ -1,5 +1,3 @@
-import { JWTPayload } from "jose";
-
 // Token
 export const ACCESS_TOKEN = "access_token";
 export const ACCESS_TOKEN_EXP = 3600;

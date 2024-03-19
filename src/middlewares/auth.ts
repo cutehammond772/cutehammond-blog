@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import validate from "@/actions/auth/validate";
-import { REFRESH_TOKEN } from "@/utils/auth/types";
-import InvalidSecretError from "@/utils/auth/errors/InvalidSecretError";
+
+import { REFRESH_TOKEN } from "@/utils/auth";
 import { validateToken } from "@/utils/auth/token";
-import renew from "@/actions/auth/renew";
+import { InvalidSecretError } from "@/utils/auth/error";
+import { renew, validate } from "@/actions/auth";
 
 // 권한이 필요할 때 자동으로 검증 및 재발급을 수행
 export async function middleware(request: NextRequest, response: NextResponse) {

@@ -1,12 +1,14 @@
 "use server";
 
-import HTTPError from "@/utils/auth/errors/HTTPError";
-import InvalidSecretError from "@/utils/auth/errors/InvalidSecretError";
-import InvalidUserError from "@/utils/auth/errors/InvalidUserError";
+import {
+  HTTPError,
+  InvalidSecretError,
+  InvalidUserError,
+} from "@/utils/auth/error";
 import { getId, validateToken } from "@/utils/auth/token";
-import { ACCESS_TOKEN } from "@/utils/auth/types";
+import { ACCESS_TOKEN } from "@/utils/auth";
 import { exists } from "@/utils/db";
-import { ServerResponseWithPayload } from "@/utils/error";
+import { ServerResponseWithPayload } from "@/utils/server";
 import { cookies } from "next/headers";
 
 export default async function validate(): Promise<
