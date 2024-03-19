@@ -2,6 +2,8 @@
 
 import { cookies } from "next/headers";
 import { exists, get, set } from "@/utils/db";
+import { actionHandler } from "@/utils/server";
+
 import validate from "./validate";
 
 import {
@@ -11,92 +13,79 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_EXP,
   SALT_KEY,
-} from "@/utils/auth/types";
+} from "@/utils/auth";
+
 import { encrypt } from "@/utils/auth/encryption";
 import { createToken } from "@/utils/auth/token";
 
-import UserNotFoundError from "@/utils/auth/errors/UserNotFoundError";
-import UserAlreadyAuthenticatedError from "@/utils/auth/errors/UserAlreadyAuthenticatedError";
-import AuthenticationError from "@/utils/auth/errors/AuthenticationError";
-import InvalidSecretError from "@/utils/auth/errors/InvalidSecretError";
-import HTTPError from "@/utils/auth/errors/HTTPError";
-import { ServerResponse } from "@/utils/error";
+import {
+  AuthenticationError,
+  InvalidSecretError,
+  UserAlreadyAuthenticatedError,
+  UserNotFoundError,
+} from "@/utils/auth/error";
 
 const production = process.env.NODE_ENV == "production";
 
 /**
  * 개발자 인증을 수행한다.
  */
-export default async function authenticate({
-  id,
-  pwd,
-}: {
-  id: string;
-  pwd: string;
-}): Promise<ServerResponse> {
-  try {
-    const secret = process.env.JWT_SECRET;
+async function authenticate({ id, pwd }: { id: string; pwd: string }) {
+  const secret = process.env.JWT_SECRET;
 
-    // JWT Secret 유효성 확인
-    if (!secret) throw new InvalidSecretError(503);
+  // JWT Secret 유효성 확인
+  if (!secret) throw new InvalidSecretError(503);
 
-    // 현재 사용자가 로그인 상태인지 확인
-    if (await validate()) throw new UserAlreadyAuthenticatedError(400);
+  // 현재 사용자가 로그인 상태인지 확인
+  if (await validate()) throw new UserAlreadyAuthenticatedError(400);
 
-    // 가입된 사용자가 존재하는지 확인
-    if (!(await exists(id))) throw new UserNotFoundError(404);
+  // 가입된 사용자가 존재하는지 확인
+  if (!(await exists(id))) throw new UserNotFoundError(404);
 
-    const salt = await get(`user:${id}`, SALT_KEY);
-    const storedpwd = await get(`user:${id}`, PASSWORD_KEY);
+  const salt = await get(`user:${id}`, SALT_KEY);
+  const storedpwd = await get(`user:${id}`, PASSWORD_KEY);
 
-    if (!salt || !storedpwd) throw new AuthenticationError(503);
+  if (!salt || !storedpwd) throw new AuthenticationError(503);
 
-    // 비밀번호 비교
-    const encryptedPwd = await encrypt(salt, pwd);
+  // 비밀번호 비교
+  const encryptedPwd = await encrypt(salt, pwd);
 
-    if (encryptedPwd !== storedpwd) throw new AuthenticationError(400);
+  if (encryptedPwd !== storedpwd) throw new AuthenticationError(400);
 
-    // 새로운 Token을 등록
-    const accessToken = await createToken(secret, {
-      id,
-      exp: ACCESS_TOKEN_EXP,
-    });
-    const refreshToken = await createToken(secret, {
-      id,
-      exp: REFRESH_TOKEN_EXP,
-    });
+  // 새로운 Token을 등록
+  const accessToken = await createToken(secret, {
+    id,
+    exp: ACCESS_TOKEN_EXP,
+  });
+  const refreshToken = await createToken(secret, {
+    id,
+    exp: REFRESH_TOKEN_EXP,
+  });
 
-    // Refresh Token Rotation
-    await set(`user:${id}`, { [REFRESH_TOKEN]: refreshToken });
+  // Refresh Token Rotation
+  await set(`user:${id}`, { [REFRESH_TOKEN]: refreshToken });
 
-    // Cookie에 새로운 Token을 등록
+  // Cookie에 새로운 Token을 등록
 
-    /**
-     * 개발 환경에서는 Secure Option을 비활성화한다.
-     * localhost의 경우 https가 아닌 http로 동작하기 때문이다.
-     */
-    const cookie = cookies();
+  /**
+   * 개발 환경에서는 Secure Option을 비활성화한다.
+   * localhost의 경우 https가 아닌 http로 동작하기 때문이다.
+   */
+  const cookie = cookies();
 
-    cookie.set({
-      name: ACCESS_TOKEN,
-      value: accessToken,
-      httpOnly: true,
-      secure: production,
-    });
+  cookie.set({
+    name: ACCESS_TOKEN,
+    value: accessToken,
+    httpOnly: true,
+    secure: production,
+  });
 
-    cookie.set({
-      name: REFRESH_TOKEN,
-      value: refreshToken,
-      httpOnly: true,
-      secure: production,
-    });
-
-    return { error: false };
-  } catch (e) {
-    if (e instanceof HTTPError) {
-      return { error: e.name, httpCode: e.httpCode };
-    }
-
-    return { error: "UNKNOWN" };
-  }
+  cookie.set({
+    name: REFRESH_TOKEN,
+    value: refreshToken,
+    httpOnly: true,
+    secure: production,
+  });
 }
+
+export default actionHandler(authenticate);

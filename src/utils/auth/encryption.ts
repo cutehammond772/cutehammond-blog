@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import { SALT_LENGTH, SALT_ROUNDS } from "./types";
-import PasswordEncryptionError from "./errors/PasswordEncryptionError";
-import SaltCreationError from "./errors/SaltCreationError";
+import { SALT_LENGTH, SALT_ROUNDS } from ".";
+import PasswordEncryptionError from "./error/PasswordEncryptionError";
+import SaltCreationError from "./error/SaltCreationError";
 
 /**
  * 비밀번호를 암호화하기 위한 Random Salt를 생성한다.

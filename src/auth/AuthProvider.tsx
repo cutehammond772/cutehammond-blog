@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, createContext, useEffect, useCallback } from "react";
-import validate from "@/actions/auth/validate";
+import React, { useState, createContext, useCallback } from "react";
+import { validate } from "@/actions/auth";
 
 export interface AuthContext {
   id: string | null;

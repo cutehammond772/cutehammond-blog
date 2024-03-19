@@ -10,6 +10,7 @@ import ModalProvider from "@/modal/ModalProvider";
 
 import ThemeToggle from "./components/theme/ThemeToggle";
 import SettingsButton from "./components/settings/SettingsButton";
+import { Hash, Home } from "react-feather";
 
 export const metadata: Metadata = {
   title: "cutehammond.dev",
@@ -42,10 +43,18 @@ export default async function Layout({
           <ModalProvider />
 
           {/* Header Section */}
-          <header className="sticky top-0 z-10 col-span-1 col-start-2 flex flex-row items-center justify-between bg-beige-100 px-4 py-4 dark:bg-charcoal-900 md:px-0">
-            <Link href="/" className="f3-bold self-start">
-              cutehammond.dev
-            </Link>
+          <header className="sticky top-0 z-10 col-span-1 col-start-2 flex flex-row items-center justify-between bg-beige-100 p-4 shadow-2xl shadow-beige-100 dark:bg-charcoal-900 dark:shadow-charcoal-900 md:px-0 md:py-8">
+            <div className="flex flex-row items-center justify-center">
+              <Link href="/" className="f3-bold self-start">
+                🐹.dev
+              </Link>
+            </div>
+            <div className="absolute left-[50%] flex -translate-x-2/4 flex-row gap-2 md:gap-4">
+              <div className="fp-bold flex flex-row items-center justify-center gap-1 bg-beige-300 px-3 py-1 dark:bg-charcoal-700">
+                <Home className="p-1" />
+                <span className="hidden md:block">Home</span>
+              </div>
+            </div>
             <div className="flex flex-row gap-2">
               <ThemeToggle />
               <SettingsButton />
