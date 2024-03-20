@@ -15,7 +15,8 @@ export function generateArticleSource(source: string) {
     ARTICLE_SOURCE: source,
     LIST_TAG: `${source}_LIST`,
     ARTICLE_GROUP: `${source}_ARTICLE_GROUP`,
-    ARTICLE_TAG: (article: string) => `${source}_ARTICLE_[${article}]`,
+    ARTICLE_TAG: (article: string) =>
+      `${source}_ARTICLE_[${encodeURI(article)}]`,
   };
 }
 
