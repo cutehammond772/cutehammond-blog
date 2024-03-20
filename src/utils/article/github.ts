@@ -64,8 +64,6 @@ export const list: ArticleListLoader = cache(async ({ draft }) => {
     if (isGithub404Error(error))
       throw new ArticleDirectoryNotFoundError(source.ARTICLE_SOURCE, 404);
 
-    console.log(error);
-
     /* Case. 기타 Error */
     throw new InvalidArticleDirectoryError(source.ARTICLE_SOURCE, 500);
   }
