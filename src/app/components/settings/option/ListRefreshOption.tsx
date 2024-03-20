@@ -7,7 +7,7 @@ import refresh from "@/actions/article/refresh";
 
 export default function ListRefreshOption() {
   const handler = useCallback(async () => {
-    await refresh({ type: "index" });
+    await refresh({ type: "list" });
 
     location.reload();
   }, []);

@@ -9,6 +9,11 @@ export type ServerResponse<T> =
       httpCode: number;
     };
 
+export function fetchWith(...tags: string[]): typeof fetch {
+  return (input: string | URL | Request, init?: RequestInit) =>
+    fetch(input, { ...init, next: { tags } });
+}
+
 export function actionHandler<P = void, Q = void>(
   func: (payload: P) => Promise<Q>
 ): (payload: P) => Promise<ServerResponse<Q>> {
