@@ -3,7 +3,7 @@ export { default as InvalidSecretError } from "./InvalidSecretError";
 export { default as InvalidTokenError } from "./InvalidTokenError";
 export { default as InvalidUserError } from "./InvalidUserError";
 export { default as PasswordEncryptionError } from "./PasswordEncryptionError";
-export { default as ProductionModeProhibitedError } from "./ProductionModeProhibitedError";
+export { default as ProductionEnvProhibitedError } from "./ProductionEnvProhibitedError";
 export { default as SaltCreationError } from "./SaltCreationError";
 export { default as TokenCreationError } from "./TokenCreationError";
 export { default as TokenValidationError } from "./TokenValidationError";

@@ -18,7 +18,7 @@ import {
 
 import {
   InvalidSecretError,
-  ProductionModeProhibitedError,
+  ProductionEnvProhibitedError,
   UserAlreadyRegisteredError,
 } from "@/utils/auth/error";
 
@@ -29,7 +29,7 @@ const production = process.env.NODE_ENV == "production";
  */
 async function register({ id, pwd }: { id: string; pwd: string }) {
   // 프로덕션 환경이 아니어야 함
-  if (production) throw new ProductionModeProhibitedError(401);
+  if (production) throw new ProductionEnvProhibitedError(401);
 
   const secret = process.env.JWT_SECRET;
 
